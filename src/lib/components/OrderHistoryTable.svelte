@@ -1,8 +1,7 @@
 <script>
-  import { onMount } from 'svelte';
   import { formatRupiah } from '../api.js';
 
-  export let userId = 'regiami';
+  export const userId = 'regiami';
 
   let orders = [
     {
@@ -77,30 +76,30 @@
   function getStatusBadge(status) {
     switch (status) {
       case 'success':
-        return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+        return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
       case 'processing':
-        return 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20 animate-pulse';
+        return 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 animate-pulse';
       case 'pending':
-        return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+        return 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20';
       case 'partial':
-        return 'bg-orange-500/10 text-orange-400 border-orange-500/20';
+        return 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20';
       case 'error':
       case 'canceled':
-        return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+        return 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20';
       default:
-        return 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+        return 'bg-slate-500/10 text-slate-600 dark:text-gray-400 border-slate-500/20';
     }
   }
 </script>
 
-<div class="glass-card rounded-2xl p-6 lg:p-8 space-y-6">
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4">
+<div class="glass-card rounded-2xl p-6 lg:p-8 space-y-6 transition-colors">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-white/5 pb-4">
     <div>
-      <h2 class="text-xl font-bold text-gray-100 flex items-center space-x-2">
-        <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+      <h2 class="text-xl font-bold text-slate-900 dark:text-gray-100 flex items-center space-x-2">
+        <span class="w-3 h-3 rounded-full bg-emerald-600 dark:bg-emerald-500"></span>
         <span>Riwayat Pesanan</span>
       </h2>
-      <p class="text-xs text-gray-400 mt-1">Lacak status proses pesanan, jumlah awal, sisa pengiriman, dan klaim garansi refill.</p>
+      <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">Lacak status proses pesanan, jumlah awal, sisa pengiriman, dan klaim garansi refill.</p>
     </div>
 
     <!-- Search Input -->
@@ -109,13 +108,13 @@
         type="text"
         bind:value={searchQuery}
         placeholder="Cari ID / Link Target..."
-        class="w-full bg-gray-900 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-all font-mono"
+        class="w-full bg-slate-50 dark:bg-gray-900 border border-slate-300 dark:border-white/10 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-gray-200 placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-all font-mono"
       />
     </div>
   </div>
 
   <!-- Filter Status Tabs -->
-  <div class="flex flex-wrap gap-1.5 border-b border-white/5 pb-3">
+  <div class="flex flex-wrap gap-1.5 border-b border-slate-200 dark:border-white/5 pb-3">
     {#each [
       { id: 'all', label: 'Semua Status' },
       { id: 'pending', label: 'Pending' },
@@ -125,7 +124,8 @@
       { id: 'error', label: 'Error' }
     ] as tab}
       <button
-        class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all {activeFilter === tab.id ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-sm' : 'bg-gray-800/30 border-white/5 text-gray-400 hover:text-gray-200'}"
+        type="button"
+        class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all {activeFilter === tab.id ? 'bg-indigo-50 border-indigo-600 text-indigo-700 dark:bg-indigo-600/30 dark:border-indigo-500 dark:text-white shadow-sm' : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900 dark:bg-gray-800/30 dark:border-white/5 dark:text-gray-400 dark:hover:text-gray-200'}"
         on:click={() => activeFilter = tab.id}
       >
         {tab.label}
@@ -134,15 +134,15 @@
   </div>
 
   {#if refillSuccessId}
-    <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs flex items-center space-x-2 animate-bounce">
+    <div class="p-3 rounded-xl bg-indigo-50 text-indigo-800 dark:bg-indigo-500/10 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/30 text-xs flex items-center space-x-2 animate-bounce">
       <span>🛡️ Permintaan Refill untuk pesanan #{refillSuccessId} telah dikirim ke server provider.</span>
     </div>
   {/if}
 
   <!-- DataGrid Table -->
   <div class="overflow-x-auto -mx-6 lg:-mx-8">
-    <table class="w-full text-left text-xs text-gray-300 min-w-[750px]">
-      <thead class="bg-gray-900/80 text-gray-400 font-semibold border-y border-white/5 uppercase tracking-wider text-[10px]">
+    <table class="w-full text-left text-xs text-slate-700 dark:text-gray-300 min-w-[750px]">
+      <thead class="bg-slate-100 dark:bg-gray-900/80 text-slate-600 dark:text-gray-400 font-semibold border-y border-slate-200 dark:border-white/5 uppercase tracking-wider text-[10px]">
         <tr>
           <th class="py-3 px-4">ID / Waktu</th>
           <th class="py-3 px-4">Layanan</th>
@@ -153,28 +153,28 @@
           <th class="py-3 px-4 text-center">Aksi</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-white/5">
+      <tbody class="divide-y divide-slate-200 dark:divide-white/5">
         {#each filteredOrders as order}
-          <tr class="hover:bg-white/[0.02] transition-colors">
+          <tr class="hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
             <td class="py-3 px-4 font-mono">
-              <div class="font-bold text-gray-200">{order.id}</div>
-              <div class="text-[10px] text-gray-500">{order.created_at}</div>
+              <div class="font-bold text-slate-900 dark:text-gray-200">{order.id}</div>
+              <div class="text-[10px] text-slate-400 dark:text-gray-500">{order.created_at}</div>
             </td>
             <td class="py-3 px-4 max-w-xs">
-              <span class="font-medium text-gray-200 truncate block">{order.service_name}</span>
+              <span class="font-medium text-slate-800 dark:text-gray-200 truncate block">{order.service_name}</span>
             </td>
-            <td class="py-3 px-4 font-mono max-w-[200px] truncate text-indigo-400">
+            <td class="py-3 px-4 font-mono max-w-[200px] truncate text-indigo-600 dark:text-indigo-400">
               <a href={order.target} target="_blank" rel="noreferrer" class="hover:underline flex items-center space-x-1">
                 <span class="truncate">{order.target}</span>
               </a>
             </td>
             <td class="py-3 px-4 text-center font-mono">
-              <div>{order.quantity?.toLocaleString()}</div>
+              <div class="font-bold text-slate-900 dark:text-gray-100">{order.quantity?.toLocaleString()}</div>
               {#if order.remains > 0}
-                <div class="text-[10px] text-orange-400 font-medium">Sisa: {order.remains}</div>
+                <div class="text-[10px] text-orange-500 dark:text-orange-400 font-medium">Sisa: {order.remains}</div>
               {/if}
             </td>
-            <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400">
+            <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">
               {formatRupiah(order.total_price?.amount || 0)}
             </td>
             <td class="py-3 px-4 text-center">
@@ -185,13 +185,14 @@
             <td class="py-3 px-4 text-center">
               {#if order.status === 'success' && order.refill_supported}
                 <button
-                  class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/30 transition-all"
+                  type="button"
+                  class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white border border-indigo-200 dark:bg-indigo-600/30 dark:hover:bg-indigo-600 dark:text-indigo-300 dark:hover:text-white dark:border-indigo-500/30 transition-all"
                   on:click={() => handleRefill(order.id)}
                 >
                   🛡️ Refill
                 </button>
               {:else}
-                <span class="text-gray-600 text-[11px]">-</span>
+                <span class="text-slate-400 dark:text-gray-600 text-[11px]">-</span>
               {/if}
             </td>
           </tr>

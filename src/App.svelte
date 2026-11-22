@@ -41,8 +41,8 @@
   }
 </script>
 
-<div class="min-h-screen bg-[#0B0F19] text-gray-100 flex flex-col">
-  <!-- Navbar -->
+<div class="min-h-screen bg-slate-50 dark:bg-[#0B0F19] text-slate-800 dark:text-gray-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">
+  <!-- Navbar with Theme Toggle Button -->
   <Navbar
     bind:activeTab
     balance={stats.balance}
@@ -71,18 +71,18 @@
       <OrderHistoryTable userId={stats.username} />
     {:else if activeTab === 'services'}
       <!-- Service Catalog Page -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 space-y-6">
-        <div class="border-b border-white/5 pb-4">
-          <h2 class="text-xl font-bold text-gray-100 flex items-center space-x-2">
-            <span class="w-3 h-3 rounded-full bg-cyan-500"></span>
+      <div class="glass-card rounded-2xl p-6 lg:p-8 space-y-6 transition-colors">
+        <div class="border-b border-slate-200 dark:border-white/5 pb-4">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-gray-100 flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-cyan-600 dark:bg-cyan-500"></span>
             <span>Katalog Seluruh Layanan Aktif</span>
           </h2>
-          <p class="text-xs text-gray-400 mt-1">Daftar harga per 1.000, batas minimal & maksimal, serta garansi refill.</p>
+          <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">Daftar harga per 1.000, batas minimal & maksimal, serta garansi refill.</p>
         </div>
 
         <div class="overflow-x-auto -mx-6 lg:-mx-8">
-          <table class="w-full text-left text-xs text-gray-300 min-w-[700px]">
-            <thead class="bg-gray-900/80 text-gray-400 font-semibold border-y border-white/5 uppercase tracking-wider text-[10px]">
+          <table class="w-full text-left text-xs text-slate-700 dark:text-gray-300 min-w-[700px]">
+            <thead class="bg-slate-100 dark:bg-gray-900/80 text-slate-600 dark:text-gray-400 font-semibold border-y border-slate-200 dark:border-white/5 uppercase tracking-wider text-[10px]">
               <tr>
                 <th class="py-3 px-4">ID</th>
                 <th class="py-3 px-4">Nama Layanan</th>
@@ -92,33 +92,34 @@
                 <th class="py-3 px-4 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-white/5">
+            <tbody class="divide-y divide-slate-200 dark:divide-white/5">
               {#each services as srv}
-                <tr class="hover:bg-white/[0.02] transition-colors">
-                  <td class="py-3 px-4 font-mono font-bold text-gray-200">{srv.id}</td>
+                <tr class="hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
+                  <td class="py-3 px-4 font-mono font-bold text-slate-900 dark:text-gray-200">{srv.id}</td>
                   <td class="py-3 px-4 max-w-sm">
-                    <div class="font-medium text-gray-100">{srv.name}</div>
-                    <div class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">{srv.description}</div>
+                    <div class="font-medium text-slate-900 dark:text-gray-100">{srv.name}</div>
+                    <div class="text-[11px] text-slate-500 dark:text-gray-400 mt-0.5 leading-relaxed">{srv.description}</div>
                   </td>
-                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400">
+                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">
                     {formatRupiah(srv.price_user?.amount || 0)}
                   </td>
-                  <td class="py-3 px-4 text-center font-mono text-gray-300">
+                  <td class="py-3 px-4 text-center font-mono text-slate-700 dark:text-gray-300">
                     {srv.min_order?.toLocaleString()} / {srv.max_order?.toLocaleString()}
                   </td>
                   <td class="py-3 px-4 text-center">
                     {#if srv.refill_supported}
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:border-indigo-500/30">
                         🛡️ Refill {srv.refill_days} Hari
                       </span>
                     {:else}
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-gray-700/40 text-gray-400 border border-gray-600/40">
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600 dark:bg-gray-700/40 dark:text-gray-400 border border-slate-300 dark:border-gray-600/40">
                         Tanpa Refill
                       </span>
                     {/if}
                   </td>
                   <td class="py-3 px-4 text-center">
                     <button
+                      type="button"
                       class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-sm"
                       on:click={() => activeTab = 'new-order'}
                     >
@@ -144,15 +145,15 @@
   {/if}
 
   <!-- Footer -->
-  <footer class="border-t border-white/5 py-6 px-4 text-center text-xs text-gray-500">
+  <footer class="border-t border-slate-200 dark:border-white/5 py-6 px-4 text-center text-xs text-slate-500 dark:text-gray-500 transition-colors">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       <div>
         © 2026 <strong>Buzzer Media</strong>. Hak Cipta Dilindungi Undang-Undang.
       </div>
-      <div class="flex items-center space-x-4 text-gray-400">
+      <div class="flex items-center space-x-4 text-slate-400 dark:text-gray-400">
         <span>Arsitektur DDD & TDD</span>
         <span>•</span>
-        <span>Cloudflare Worker & VPS Agnostic</span>
+        <span>Adaptive Dual-Theme (Dark & Light)</span>
       </div>
     </div>
   </footer>
