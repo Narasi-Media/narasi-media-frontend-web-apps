@@ -47,6 +47,11 @@
 }
 
 .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Fira Code', monospace;
   letter-spacing: -0.02em;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "cv02" 1;
 }

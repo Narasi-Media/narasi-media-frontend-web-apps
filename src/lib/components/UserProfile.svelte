@@ -5,6 +5,7 @@
     updateUserProfile,
     regenerateApiKey,
     updateUserPassword,
+    adjustUserBalance,
     formatRupiah
   } from '../api.js';
 
@@ -28,8 +29,8 @@
     telegram_username: '@regiami_buzzer',
     role: 'Member',
     tier: 'VIP Gold Partner',
-    balance: 250000,
-    balance_formatted: 'Rp 250.000',
+    balance: 500000,
+    balance_formatted: 'Rp 500.000',
     total_orders: 14,
     total_spent: 1250000,
     total_deposit: 1500000,
@@ -38,6 +39,11 @@
     two_factor_enabled: true,
     registered_at: '22 Nov 2026'
   };
+
+  // Balance modal states
+  let showBalanceModal = false;
+  let customBalanceInput = 500000;
+  let isUpdatingBalance = false;
 
   // Form states
   let formName = '';
@@ -177,6 +183,23 @@
       saving = false;
     }
   }
+
+  async function handleSetBalance(amount) {
+    isUpdatingBalance = true;
+    try {
+      await adjustUserBalance(profile.username, amount);
+      profile.balance = amount;
+      profile.balance_formatted = formatRupiah(amount);
+      if (stats) stats.balance = amount;
+      dispatch('balanceUpdated', { balance: amount });
+      showBalanceModal = false;
+      showToast(`Saldo akun berhasil diubah menjadi ${formatRupiah(amount)}!`);
+    } catch (e) {
+      showToast('Gagal mengubah saldo: ' + e.message, 'error');
+    } finally {
+      isUpdatingBalance = false;
+    }
+  }
 </script>
 
 <div class="space-y-6">
@@ -250,17 +273,29 @@
 
     <!-- 4 KPI Stat Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-      <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80">
-        <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Saldo Akun</div>
-        <div class="text-lg font-bold font-mono text-zinc-900 dark:text-zinc-100 mt-1">
-          {formatRupiah(profile.balance || stats.balance || 0)}
+      <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Saldo Akun</span>
+            <button
+              type="button"
+              on:click={() => { customBalanceInput = profile.balance || 500000; showBalanceModal = true; }}
+              class="text-[10px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+              title="Ubah nominal saldo akun"
+            >
+              Ubah Saldo
+            </button>
+          </div>
+          <div class="text-xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100 mt-1">
+            {formatRupiah(profile.balance || stats.balance || 0)}
+          </div>
         </div>
         <div class="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1">Siap digunakan order</div>
       </div>
 
       <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80">
         <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Total Transaksi</div>
-        <div class="text-lg font-bold font-mono text-zinc-900 dark:text-zinc-100 mt-1">
+        <div class="text-xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100 mt-1">
           {profile.total_orders || stats.total_orders || 0} Pesanan
         </div>
         <div class="text-[10px] text-zinc-400 mt-1">100% diproses otomatis</div>
@@ -268,7 +303,7 @@
 
       <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80">
         <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Total Belanja</div>
-        <div class="text-lg font-bold font-mono text-zinc-900 dark:text-zinc-100 mt-1">
+        <div class="text-xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100 mt-1">
           {formatRupiah(profile.total_spent || stats.total_spent || 0)}
         </div>
         <div class="text-[10px] text-zinc-400 mt-1">Akumulasi seumur hidup</div>
@@ -276,7 +311,7 @@
 
       <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80">
         <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Level Kemitraan</div>
-        <div class="text-lg font-bold font-mono text-blue-600 dark:text-blue-400 mt-1">
+        <div class="text-xl font-bold tracking-tight text-blue-600 dark:text-blue-400 mt-1">
           VIP Gold
         </div>
         <div class="text-[10px] text-zinc-400 mt-1">Diskon 5% katalog aktif</div>
@@ -289,7 +324,7 @@
         <span class="font-medium text-zinc-700 dark:text-zinc-300">
           Progres Menuju <strong class="text-blue-600 dark:text-blue-400">VIP Platinum Partner</strong>
         </span>
-        <span class="font-mono text-zinc-500">
+        <span class="tabular-nums font-semibold text-zinc-600 dark:text-zinc-400">
           {formatRupiah(profile.total_spent || 1250000)} / Rp 2.500.000
         </span>
       </div>
@@ -708,6 +743,79 @@
             class="h-8 px-4 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold"
           >
             {isRegeneratingKey ? 'Memproses...' : 'Ya, Buat Kunci Baru'}
+          </button>
+        </div>
+      </div>
+    </div>
+  {/if}
+
+  <!-- Modal Atur Saldo Akun -->
+  {#if showBalanceModal}
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div class="w-full max-w-sm bg-white dark:bg-[#121215] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 space-y-4 shadow-2xl">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              Atur Nominal Saldo Akun
+            </h3>
+          </div>
+          <button
+            type="button"
+            on:click={() => showBalanceModal = false}
+            class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 text-xs"
+          >
+            ✕
+          </button>
+        </div>
+
+        <p class="text-xs text-zinc-500 leading-relaxed">
+          Pilih salah satu nominal preset atau ketik saldo yang Anda inginkan untuk simulasi transaksi.
+        </p>
+
+        <!-- Presets -->
+        <div class="grid grid-cols-3 gap-2">
+          {#each [0, 100000, 500000, 1000000, 2500000, 5000000] as preset}
+            <button
+              type="button"
+              on:click={() => customBalanceInput = preset}
+              class="py-1.5 px-2 rounded-lg text-xs font-semibold tabular-nums border transition-all {customBalanceInput === preset ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-transparent shadow-sm' : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300'}"
+            >
+              {formatRupiah(preset)}
+            </button>
+          {/each}
+        </div>
+
+        <!-- Custom Input -->
+        <div class="space-y-1 pt-1">
+          <label for="custom-bal" class="block text-[11px] font-medium text-zinc-600 dark:text-zinc-400">
+            Ketik Nominal Saldo Bebas (IDR)
+          </label>
+          <input
+            id="custom-bal"
+            type="number"
+            bind:value={customBalanceInput}
+            min="0"
+            step="10000"
+            class="w-full px-3 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 text-xs tabular-nums font-semibold focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100"
+          />
+        </div>
+
+        <div class="flex items-center justify-end space-x-2 pt-2 border-t border-zinc-200 dark:border-zinc-800">
+          <button
+            type="button"
+            on:click={() => showBalanceModal = false}
+            class="h-8 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 text-xs font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          >
+            Batal
+          </button>
+          <button
+            type="button"
+            disabled={isUpdatingBalance}
+            on:click={() => handleSetBalance(customBalanceInput)}
+            class="h-8 px-4 rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-semibold shadow-sm disabled:opacity-50"
+          >
+            {isUpdatingBalance ? 'Menyimpan...' : 'Terapkan Saldo'}
           </button>
         </div>
       </div>

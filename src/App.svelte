@@ -13,7 +13,7 @@
   let activeTab = 'dashboard';
   let isDepositModalOpen = false;
   let stats = {
-    balance: 250000,
+    balance: 500000,
     total_orders: 14,
     total_spent: 1250000,
     total_deposit: 1500000,
@@ -142,6 +142,7 @@
         userId={stats.username}
         on:openDeposit={() => isDepositModalOpen = true}
         on:updateProfile={(e) => stats.full_name = e.detail.fullName}
+        on:balanceUpdated={(e) => stats.balance = e.detail.balance}
       />
     {/if}
   </main>

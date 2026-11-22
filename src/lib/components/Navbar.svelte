@@ -3,7 +3,7 @@
   import { formatRupiah } from '../api.js';
 
   export let activeTab = 'dashboard';
-  export let balance = 250000;
+  export let balance = 500000;
   export let username = 'regiami';
 
   const dispatch = createEventDispatcher();
@@ -114,7 +114,7 @@
       <div class="flex items-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 pl-2.5 space-x-2">
         <div class="text-right">
           <div class="text-[9px] uppercase tracking-wider font-semibold text-zinc-400">Saldo</div>
-          <div class="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">{formatRupiah(balance)}</div>
+          <div class="text-xs font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100">{formatRupiah(balance)}</div>
         </div>
         <button
           type="button"

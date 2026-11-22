@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { fetchCategories, fetchServices, placeOrder, formatRupiah } from '../api.js';
 
-  export let userBalance = 250000;
+  export let userBalance = 500000;
   export let userId = 'regiami';
 
   const dispatch = createEventDispatcher();
@@ -217,8 +217,8 @@
 
       <!-- Real-time Price Preview Box -->
       <div class="ui-inset rounded-lg p-3 flex flex-col justify-center">
-        <div class="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Total Biaya</div>
-        <div class="text-lg font-bold font-mono text-zinc-900 dark:text-zinc-100">
+        <div class="text-[10px] uppercase tracking-wider text-zinc-400">Total Biaya</div>
+        <div class="text-lg font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100">
           {formatRupiah(calculatedPrice)}
         </div>
         {#if isInsufficient}

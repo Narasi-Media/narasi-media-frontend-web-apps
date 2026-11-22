@@ -3,7 +3,7 @@
   import { formatRupiah } from '../api.js';
 
   export let stats = {
-    balance: 250000,
+    balance: 500000,
     total_orders: 14,
     total_spent: 1250000,
     total_deposit: 1500000,
@@ -50,7 +50,7 @@
             <line x1="2" y1="10" x2="22" y2="10"></line>
           </svg>
         </div>
-        <div class="mt-2 text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-100">
+        <div class="mt-2 text-2xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100">
           {formatRupiah(stats.balance)}
         </div>
       </div>
@@ -77,12 +77,12 @@
             <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
           </svg>
         </div>
-        <div class="mt-2 text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-100">
+        <div class="mt-2 text-2xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100">
           {stats.total_orders}
         </div>
       </div>
       <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
-        <span class="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">100% Selesai</span>
+        <span class="text-[11px] text-zinc-500 dark:text-zinc-400">100% Selesai</span>
         <button
           type="button"
           class="text-xs font-medium text-zinc-900 dark:text-zinc-100 hover:underline flex items-center space-x-1"
@@ -104,7 +104,7 @@
             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
           </svg>
         </div>
-        <div class="mt-2 text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-100">
+        <div class="mt-2 text-2xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100">
           {formatRupiah(stats.total_spent)}
         </div>
       </div>
@@ -122,7 +122,7 @@
             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
           </svg>
         </div>
-        <div class="mt-2 text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-100">
+        <div class="mt-2 text-2xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100">
           {formatRupiah(stats.total_deposit)}
         </div>
       </div>

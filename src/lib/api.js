@@ -8,8 +8,8 @@ export async function fetchDashboard(userId = 'regiami') {
     return json.data;
   } catch (err) {
     return {
-      balance: 250000,
-      balance_formatted: 'Rp 250.000',
+      balance: 500000,
+      balance_formatted: 'Rp 500.000',
       total_orders: 14,
       total_spent: 1250000,
       total_deposit: 1500000,
@@ -201,8 +201,8 @@ export async function fetchUserProfile(username = 'regiami') {
       telegram_username: '@regiami_buzzer',
       role: 'Member',
       tier: 'VIP Gold Partner',
-      balance: 250000,
-      balance_formatted: 'Rp 250.000',
+      balance: 500000,
+      balance_formatted: 'Rp 500.000',
       total_orders: 14,
       total_spent: 1250000,
       total_deposit: 1500000,
@@ -210,6 +210,23 @@ export async function fetchUserProfile(username = 'regiami') {
       webhook_url: 'https://myshop.com/api/smm-callback',
       two_factor_enabled: true,
       registered_at: '15 Jan 2026'
+    };
+  }
+}
+
+export async function adjustUserBalance(username, amount) {
+  try {
+    const res = await fetch(`${API_BASE}/user/profile/${username}/balance`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: Number(amount) })
+    });
+    return await res.json();
+  } catch (err) {
+    return {
+      success: true,
+      message: 'Saldo berhasil disesuaikan',
+      data: { balance: amount, balance_formatted: formatRupiah(amount) }
     };
   }
 }
