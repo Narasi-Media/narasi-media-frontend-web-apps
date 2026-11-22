@@ -6,6 +6,7 @@
   import NewOrderForm from './lib/components/NewOrderForm.svelte';
   import MassOrderForm from './lib/components/MassOrderForm.svelte';
   import OrderHistoryTable from './lib/components/OrderHistoryTable.svelte';
+  import UserProfile from './lib/components/UserProfile.svelte';
   import DepositModal from './lib/components/DepositModal.svelte';
   import { fetchDashboard, fetchServices, formatRupiah } from './lib/api.js';
 
@@ -135,6 +136,13 @@
           </table>
         </div>
       </div>
+    {:else if activeTab === 'profile'}
+      <UserProfile
+        {stats}
+        userId={stats.username}
+        on:openDeposit={() => isDepositModalOpen = true}
+        on:updateProfile={(e) => stats.full_name = e.detail.fullName}
+      />
     {/if}
   </main>
 

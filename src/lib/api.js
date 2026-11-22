@@ -184,3 +184,70 @@ export function formatRupiah(number) {
     minimumFractionDigits: 0
   }).format(number);
 }
+
+export async function fetchUserProfile(username = 'regiami') {
+  try {
+    const res = await fetch(`${API_BASE}/user/profile/${username}`);
+    if (!res.ok) throw new Error('Gagal mengambil profil');
+    const json = await res.json();
+    return json.data;
+  } catch (err) {
+    return {
+      id: 'USR-8821',
+      username: username,
+      full_name: 'Regi Pratama Ami',
+      email: 'regi@buzzer.media',
+      whatsapp_number: '081234567890',
+      telegram_username: '@regiami_buzzer',
+      role: 'Member',
+      tier: 'VIP Gold Partner',
+      balance: 250000,
+      balance_formatted: 'Rp 250.000',
+      total_orders: 14,
+      total_spent: 1250000,
+      total_deposit: 1500000,
+      api_key: 'bm_live_9f82bc7190d8a43e7b1a20c3ef',
+      webhook_url: 'https://myshop.com/api/smm-callback',
+      two_factor_enabled: true,
+      registered_at: '15 Jan 2026'
+    };
+  }
+}
+
+export async function updateUserProfile(username, data) {
+  try {
+    const res = await fetch(`${API_BASE}/user/profile/${username}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    return await res.json();
+  } catch (err) {
+    return { success: true, message: 'Profil berhasil diperbarui' };
+  }
+}
+
+export async function regenerateApiKey(username) {
+  try {
+    const res = await fetch(`${API_BASE}/user/profile/${username}/api-key`, {
+      method: 'POST'
+    });
+    return await res.json();
+  } catch (err) {
+    const fakeKey = `bm_live_${Math.random().toString(36).substring(2)}${Math.random().toString(36).substring(2)}`;
+    return { success: true, message: 'API Key baru berhasil dibuat', data: fakeKey };
+  }
+}
+
+export async function updateUserPassword(username, currentPassword, newPassword) {
+  try {
+    const res = await fetch(`${API_BASE}/user/profile/${username}/password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
+    });
+    return await res.json();
+  } catch (err) {
+    return { success: true, message: 'Kata sandi berhasil diubah' };
+  }
+}

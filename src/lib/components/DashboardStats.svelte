@@ -133,7 +133,7 @@
   </div>
 
   <!-- Clean Action Callouts -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
     <button
       type="button"
       class="ui-card rounded-xl p-5 text-left hover:border-zinc-400 dark:hover:border-zinc-600 transition-all flex items-center justify-between group focus:outline-none"
@@ -142,7 +142,7 @@
       <div>
         <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Alur Cepat</div>
         <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-0.5">Pesan Layanan Buzzer & SMM</div>
-        <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Instagram, TikTok, YouTube, Twitter & Telegram</div>
+        <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Instagram, TikTok, YouTube & X</div>
       </div>
       <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-900 transition-colors">
         <span class="text-sm font-bold">&rarr;</span>
@@ -157,7 +157,22 @@
       <div>
         <div class="text-[10px] font-mono uppercase font-semibold text-emerald-600 dark:text-emerald-400">Pembayaran Instan</div>
         <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-0.5">Top-Up Saldo QRIS & Mutasi</div>
-        <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">BCA, Mandiri, Dana, GoPay, OVO, ShopeePay (Bonus +5%)</div>
+        <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">BCA, Mandiri, Dana, GoPay (+5%)</div>
+      </div>
+      <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-900 transition-colors">
+        <span class="text-sm font-bold">&rarr;</span>
+      </div>
+    </button>
+
+    <button
+      type="button"
+      class="ui-card rounded-xl p-5 text-left hover:border-zinc-400 dark:hover:border-zinc-600 transition-all flex items-center justify-between group focus:outline-none"
+      on:click={() => dispatch('navigate', 'profile')}
+    >
+      <div>
+        <div class="text-[10px] font-mono uppercase font-semibold text-blue-600 dark:text-blue-400">Akun & Integrasi</div>
+        <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-0.5">Profil & API Key Reseller</div>
+        <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Ganti sandi, kontak WA & kunci API</div>
       </div>
       <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-900 transition-colors">
         <span class="text-sm font-bold">&rarr;</span>

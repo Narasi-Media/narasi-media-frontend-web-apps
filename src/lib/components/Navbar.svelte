@@ -32,8 +32,9 @@
 </script>
 
 <header class="sticky top-0 z-40 ui-header px-4 lg:px-8 py-3 transition-colors duration-150">
-  <div class="max-w-7xl mx-auto flex items-center justify-between">
-    <!-- Brand Logo Button (Linear style) -->
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between">
+      <!-- Brand Logo Button (Linear style) -->
     <button
       type="button"
       class="flex items-center space-x-3 text-left focus:outline-none group"
@@ -98,6 +99,13 @@
       >
         Katalog
       </button>
+      <button
+        type="button"
+        class="px-3 py-1.5 rounded-md transition-all {activeTab === 'profile' ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm border border-zinc-200/60 dark:border-zinc-700/50 font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'}"
+        on:click={() => selectTab('profile')}
+      >
+        Profil
+      </button>
     </nav>
 
     <!-- Right Controls: Balance, Top-up, Theme Switcher, Profile -->
@@ -145,12 +153,75 @@
         {/if}
       </button>
 
-      <!-- User Account Indicator -->
-      <div class="hidden sm:flex items-center space-x-2 pl-1 border-l border-zinc-200 dark:border-zinc-800">
-        <div class="w-7 h-7 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono text-[11px] font-bold flex items-center justify-center border border-zinc-300 dark:border-zinc-700 uppercase" title={`@${username}`}>
+      <!-- User Account Shortcut Button (Links to Profile) -->
+      <button
+        type="button"
+        on:click={() => selectTab('profile')}
+        class="flex items-center space-x-2 pl-1.5 border-l border-zinc-200 dark:border-zinc-800 group focus:outline-none"
+        title="Lihat Profil Akun & Pengaturan"
+      >
+        <div class="w-7 h-7 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono text-[11px] font-bold flex items-center justify-center border transition-all {activeTab === 'profile' ? 'ring-2 ring-zinc-900 dark:ring-zinc-100 border-transparent bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900' : 'border-zinc-300 dark:border-zinc-700 group-hover:border-zinc-500'} uppercase">
           {username.slice(0, 2)}
         </div>
-      </div>
+        <div class="text-left hidden xl:block">
+          <div class="text-[11px] font-semibold text-zinc-900 dark:text-zinc-100 leading-tight">@{username}</div>
+          <div class="text-[9px] text-zinc-400 font-mono">VIP Gold</div>
+        </div>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile Secondary Tab Bar -->
+  <div class="flex md:hidden overflow-x-auto space-x-1 pt-2 pb-0.5 text-xs font-medium no-scrollbar border-t border-zinc-200/60 dark:border-zinc-800/60 mt-2">
+    <button
+      type="button"
+      class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all {activeTab === 'company' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400'}"
+      on:click={() => selectTab('company')}
+    >
+      Company Profile
+    </button>
+    <button
+      type="button"
+      class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all {activeTab === 'dashboard' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400'}"
+      on:click={() => selectTab('dashboard')}
+    >
+      Dashboard
+    </button>
+    <button
+      type="button"
+      class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all {activeTab === 'new-order' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400'}"
+      on:click={() => selectTab('new-order')}
+    >
+      Pesan
+    </button>
+    <button
+      type="button"
+      class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all {activeTab === 'mass-order' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400'}"
+      on:click={() => selectTab('mass-order')}
+    >
+      Masal
+    </button>
+    <button
+      type="button"
+      class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all {activeTab === 'history' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400'}"
+      on:click={() => selectTab('history')}
+    >
+      Riwayat
+    </button>
+    <button
+      type="button"
+      class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all {activeTab === 'services' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400'}"
+      on:click={() => selectTab('services')}
+    >
+      Katalog
+    </button>
+    <button
+      type="button"
+      class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all {activeTab === 'profile' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400'}"
+      on:click={() => selectTab('profile')}
+    >
+      Profil
+    </button>
+  </div>
   </div>
 </header>
