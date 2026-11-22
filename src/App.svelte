@@ -41,7 +41,7 @@
   }
 </script>
 
-<div class="min-h-screen bg-slate-50 dark:bg-[#0B0F19] text-slate-800 dark:text-gray-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">
+<div class="min-h-screen bg-slate-50 dark:bg-[#0B0F19] text-slate-800 dark:text-gray-100 flex flex-col font-['Outfit',sans-serif] transition-colors duration-200">
   <!-- Navbar with Theme Toggle Button -->
   <Navbar
     bind:activeTab
