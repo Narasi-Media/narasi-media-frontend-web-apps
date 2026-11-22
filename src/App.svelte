@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import Navbar from './lib/components/Navbar.svelte';
+  import CompanyProfile from './lib/components/CompanyProfile.svelte';
   import DashboardStats from './lib/components/DashboardStats.svelte';
   import NewOrderForm from './lib/components/NewOrderForm.svelte';
   import MassOrderForm from './lib/components/MassOrderForm.svelte';
@@ -53,7 +54,9 @@
 
   <!-- Main Content Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8">
-    {#if activeTab === 'dashboard'}
+    {#if activeTab === 'company'}
+      <CompanyProfile on:navigateToApp={(e) => activeTab = e.detail.tab} />
+    {:else if activeTab === 'dashboard'}
       <DashboardStats
         {stats}
         on:openDeposit={() => isDepositModalOpen = true}

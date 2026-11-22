@@ -58,6 +58,13 @@
     <nav class="hidden md:flex items-center space-x-0.5 bg-zinc-100 dark:bg-zinc-900 p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium">
       <button
         type="button"
+        class="px-3 py-1.5 rounded-md transition-all {activeTab === 'company' ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm border border-zinc-200/60 dark:border-zinc-700/50 font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'}"
+        on:click={() => selectTab('company')}
+      >
+        Company Profile
+      </button>
+      <button
+        type="button"
         class="px-3 py-1.5 rounded-md transition-all {activeTab === 'dashboard' ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm border border-zinc-200/60 dark:border-zinc-700/50 font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'}"
         on:click={() => selectTab('dashboard')}
       >
@@ -89,7 +96,7 @@
         class="px-3 py-1.5 rounded-md transition-all {activeTab === 'services' ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm border border-zinc-200/60 dark:border-zinc-700/50 font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'}"
         on:click={() => selectTab('services')}
       >
-        Layanan
+        Katalog
       </button>
     </nav>
 
