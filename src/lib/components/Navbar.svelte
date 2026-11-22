@@ -8,7 +8,7 @@
 
   const dispatch = createEventDispatcher();
 
-  let isDark = true;
+  let isDark = false;
 
   onMount(() => {
     isDark = document.documentElement.classList.contains('dark');

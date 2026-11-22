@@ -29,7 +29,7 @@
           <span class="text-[10px] text-zinc-400 font-mono">22 Nov 2026</span>
         </div>
         <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
-          Semua node pemrosesan beroperasi normal. Layanan <strong>SRV-101 (Instagram REAL Indo)</strong> aktif dengan garansi refill 30 hari. Deposit QRIS manual diproses otomatis dalam 1–5 menit dengan bonus promo saldo 5%.
+          Semua node pemrosesan beroperasi normal. Layanan <strong>SRV-101 (Instagram REAL Indo)</strong> aktif dengan garansi refill 30 hari. Deposit QRIS manual diverifikasi dan diproses otomatis dalam 1–5 menit nonstop.
         </p>
       </div>
     </div>
@@ -157,7 +157,7 @@
       <div>
         <div class="text-[10px] font-mono uppercase font-semibold text-emerald-600 dark:text-emerald-400">Pembayaran Instan</div>
         <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-0.5">Top-Up Saldo QRIS & Mutasi</div>
-        <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">BCA, Mandiri, Dana, GoPay (+5%)</div>
+        <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">BCA, Mandiri, Dana, GoPay, OVO, ShopeePay</div>
       </div>
       <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-900 transition-colors">
         <span class="text-sm font-bold">&rarr;</span>

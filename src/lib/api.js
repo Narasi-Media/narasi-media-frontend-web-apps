@@ -153,7 +153,7 @@ export async function requestDeposit(payload) {
         requested_amount: { amount: payload.amount },
         unique_code: unique,
         total_to_pay: { amount: payload.amount + unique },
-        balance_credited: { amount: Math.floor(payload.amount * 1.05) },
+        balance_credited: { amount: payload.amount },
         status: 'pending'
       }
     };

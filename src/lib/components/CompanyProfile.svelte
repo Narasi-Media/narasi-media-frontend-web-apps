@@ -44,7 +44,7 @@
   // Live Toast Stream
   let liveToasts = [
     { id: 1, text: 'Member @fashion.id baru saja memesan 2.500 Instagram Likes', time: '8 detik lalu', icon: '❤️' },
-    { id: 2, text: 'Top up deposit QRIS Rp 100.215 sukses diverifikasi otomatis (+Bonus 10k)', time: '24 detik lalu', icon: '💳' },
+    { id: 2, text: 'Top up deposit QRIS Rp 100.215 sukses diverifikasi otomatis 24 jam', time: '24 detik lalu', icon: '💳' },
     { id: 3, text: 'Pesanan 10.000 TikTok Views selesai diproses untuk @kuliner_nusantara', time: '41 detik lalu', icon: '🚀' },
     { id: 4, text: 'Member @techreview baru saja mengklaim Refill Garansi 30 Hari', time: '1 menit lalu', icon: '🛡️' }
   ];
@@ -189,21 +189,6 @@
       </button>
     </div>
   {/if}
-
-  <!-- TOP PROMO BANNER (Modern Minimalist Linear Style) -->
-  <div class="bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 text-zinc-100 py-2.5 px-4 text-center text-xs font-medium rounded-xl border border-zinc-800 flex flex-wrap items-center justify-center gap-2 shadow-sm">
-    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-      PROMO QRIS OTOMATIS
-    </span>
-    <span>Dapatkan <strong>Bonus Saldo +10%</strong> untuk setiap pengisian saldo via QRIS 24 Jam nonstop!</span>
-    <button
-      type="button"
-      on:click={() => goToApp('dashboard')}
-      class="underline font-bold text-white hover:text-emerald-300 transition-colors ml-1"
-    >
-      Klaim Bonus Sekarang →
-    </button>
-  </div>
 
   <!-- HERO SECTION WITH GENERATED VISUAL SHOWCASE -->
   <section class="max-w-6xl mx-auto space-y-10 pt-4">

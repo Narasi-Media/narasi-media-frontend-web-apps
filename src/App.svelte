@@ -10,7 +10,7 @@
   import DepositModal from './lib/components/DepositModal.svelte';
   import { fetchDashboard, fetchServices, formatRupiah } from './lib/api.js';
 
-  let activeTab = 'dashboard';
+  let activeTab = 'company';
   let isDepositModalOpen = false;
   let stats = {
     balance: 500000,
@@ -23,6 +23,12 @@
   let services = [];
 
   onMount(async () => {
+    // Default to white/light mode for company profile
+    const savedTheme = localStorage.getItem('theme');
+    if (!savedTheme || savedTheme === 'light') {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
     stats = await fetchDashboard('regiami');
     services = await fetchServices();
   });

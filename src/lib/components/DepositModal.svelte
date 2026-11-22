@@ -149,11 +149,11 @@
           </div>
         </div>
 
-        <!-- Promo Bonus Note -->
+        <!-- Info Proses Note -->
         <div class="ui-inset rounded-lg p-3 text-xs flex items-center justify-between">
-          <span class="text-zinc-500 dark:text-zinc-400">Bonus Saldo (+5%):</span>
-          <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400">
-            +{formatRupiah(Math.floor(amount * 0.05))}
+          <span class="text-zinc-500 dark:text-zinc-400">Verifikasi Pembayaran:</span>
+          <span class="font-medium text-zinc-800 dark:text-zinc-200">
+            Otomatis & Nonstop 24 Jam
           </span>
         </div>
 
