@@ -210,7 +210,7 @@
     <div class="text-center space-y-6 max-w-4xl mx-auto">
       <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/80 text-xs text-zinc-700 dark:text-zinc-300 shadow-sm">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span class="font-mono text-[11px] font-medium tracking-wide">Multi-Platform Dispatch Engine • Uptime 99.98%</span>
+        <span class="font-mono text-[11px] font-medium tracking-wide">Platform Optimasi Sosial Media No. 1 Indonesia • Layanan Aktif 24 Jam</span>
       </div>
 
       <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.1]">
@@ -266,11 +266,11 @@
             <div class="flex items-center space-x-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
               <span class="text-[11px] font-mono font-bold text-emerald-400 uppercase tracking-wider">
-                Automated Dispatch SMM v2
+                Sistem Pengerjaan Cepat & Otomatis
               </span>
             </div>
             <p class="text-xs text-zinc-200 leading-snug">
-              Pesanan diproses instan ke provider upstream tier-1 dalam &lt; 3 menit. Dilengkapi pemantauan mutasi QRIS otomatis dan sistem auto-refund.
+              Pesanan langsung mulai diproses dalam waktu kurang dari 3 menit. Dilengkapi verifikasi pembayaran instan dan garansi isi ulang jika kuantitas berkurang.
             </p>
           </div>
 
@@ -757,19 +757,19 @@
   <section class="max-w-6xl mx-auto ui-card rounded-2xl p-6 lg:p-8 space-y-4 bg-zinc-900 text-zinc-100 border border-zinc-800 shadow-xl">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">Standard SMM v2 API</span>
-        <h3 class="text-lg font-bold text-white mt-0.5">Siap Integrasi Web Panel Reseller & Developer</h3>
+        <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">Koneksi Otomatis Mitra Bisnis</span>
+        <h3 class="text-lg font-bold text-white mt-0.5">Integrasi API untuk Reseller & Pemilik Website</h3>
       </div>
       <button
         type="button"
         on:click={() => goToApp('dashboard')}
         class="px-4 py-2 rounded-xl bg-zinc-100 text-zinc-900 text-xs font-bold hover:bg-white transition-all self-start shadow"
       >
-        Dapatkan API Key Reseller →
+        Dapatkan Kunci Akses API →
       </button>
     </div>
     <p class="text-xs text-zinc-400 max-w-2xl leading-relaxed">
-      Sambungkan sistem backend website Anda secara langsung menggunakan dokumentasi standar industri v2.
+      Hubungkan website atau aplikasi Anda ke sistem Buzzer Media untuk pemesanan otomatis dengan harga agen reseller termurah.
     </p>
     <div class="p-4 rounded-xl bg-black/80 border border-zinc-800 font-mono text-[11px] text-zinc-300 overflow-x-auto space-y-1">
       <div class="text-zinc-500"># Contoh request submit order via cURL</div>

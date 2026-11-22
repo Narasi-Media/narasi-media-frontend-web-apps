@@ -147,16 +147,16 @@
     />
   {/if}
 
-  <!-- Footer (Linear style) -->
-  <footer class="border-t border-zinc-200 dark:border-zinc-800/80 py-5 px-4 text-xs text-zinc-400 dark:text-zinc-500 transition-colors">
+  <!-- Footer -->
+  <footer class="border-t border-zinc-200 dark:border-zinc-800/80 py-5 px-4 text-xs text-zinc-500 dark:text-zinc-400 transition-colors">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center space-x-2">
-        <span class="font-semibold text-zinc-700 dark:text-zinc-300">buzzer.media</span>
+        <span class="font-semibold text-zinc-800 dark:text-zinc-200">buzzer.media</span>
         <span>&middot;</span>
-        <span>Arsitektur Domain-Driven Design (DDD) & TDD</span>
+        <span>Solusi Pemasaran Sosial Media & Jaringan Buzzer Terpercaya Indonesia</span>
       </div>
-      <div class="flex items-center space-x-3 text-zinc-400 font-mono text-[11px]">
-        <span>Cloudflare Workers & VPS Agnostic</span>
+      <div class="flex items-center space-x-3 text-zinc-400 text-[11px]">
+        <span>Layanan Otomatis 24 Jam &bull; Garansi Refill &bull; Keamanan Terjamin</span>
       </div>
     </div>
   </footer>
