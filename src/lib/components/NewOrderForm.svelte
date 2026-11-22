@@ -26,7 +26,7 @@
     }
   });
 
-  $: filteredServices = services.filter(s => s.category_id === selectedCategory);
+  $: filteredServices = services.filter(s => s.category_id === selectedCategory && s.is_active !== false);
   $: {
     if (filteredServices.length > 0 && !filteredServices.some(s => s.id === selectedServiceId)) {
       selectedServiceId = filteredServices[0].id;
