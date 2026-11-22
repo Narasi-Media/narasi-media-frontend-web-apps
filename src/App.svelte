@@ -41,8 +41,8 @@
   }
 </script>
 
-<div class="min-h-screen bg-slate-50 dark:bg-[#0B0F19] text-slate-800 dark:text-gray-100 flex flex-col font-['Outfit',sans-serif] transition-colors duration-200">
-  <!-- Navbar with Theme Toggle Button -->
+<div class="min-h-screen bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 flex flex-col font-sans transition-colors duration-150">
+  <!-- Navbar -->
   <Navbar
     bind:activeTab
     balance={stats.balance}
@@ -70,57 +70,57 @@
     {:else if activeTab === 'history'}
       <OrderHistoryTable userId={stats.username} />
     {:else if activeTab === 'services'}
-      <!-- Service Catalog Page -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 space-y-6 transition-colors">
-        <div class="border-b border-slate-200 dark:border-white/5 pb-4">
-          <h2 class="text-xl font-bold text-slate-900 dark:text-gray-100 flex items-center space-x-2">
-            <span class="w-3 h-3 rounded-full bg-cyan-600 dark:bg-cyan-500"></span>
-            <span>Katalog Seluruh Layanan Aktif</span>
-          </h2>
-          <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">Daftar harga per 1.000, batas minimal & maksimal, serta garansi refill.</p>
+      <!-- Service Catalog Page (shadcn style) -->
+      <div class="ui-card rounded-xl p-6 lg:p-8 space-y-5">
+        <div class="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></span>
+            <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+              Katalog Layanan Aktif
+            </h2>
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Daftar harga modal & jual per 1.000, kuota min/maks, serta status garansi refill.</p>
         </div>
 
         <div class="overflow-x-auto -mx-6 lg:-mx-8">
-          <table class="w-full text-left text-xs text-slate-700 dark:text-gray-300 min-w-[700px]">
-            <thead class="bg-slate-100 dark:bg-gray-900/80 text-slate-600 dark:text-gray-400 font-semibold border-y border-slate-200 dark:border-white/5 uppercase tracking-wider text-[10px]">
+          <table class="w-full text-left text-xs text-zinc-600 dark:text-zinc-300 min-w-[700px]">
+            <thead class="bg-zinc-50 dark:bg-zinc-900/60 text-zinc-500 dark:text-zinc-400 font-medium border-y border-zinc-200 dark:border-zinc-800 text-[11px]">
               <tr>
-                <th class="py-3 px-4">ID</th>
-                <th class="py-3 px-4">Nama Layanan</th>
-                <th class="py-3 px-4 text-right">Harga / 1K</th>
-                <th class="py-3 px-4 text-center">Min / Maks</th>
-                <th class="py-3 px-4 text-center">Garansi</th>
-                <th class="py-3 px-4 text-center">Aksi</th>
+                <th class="py-2.5 px-4">ID</th>
+                <th class="py-2.5 px-4">Nama Layanan</th>
+                <th class="py-2.5 px-4 text-right">Harga / 1K</th>
+                <th class="py-2.5 px-4 text-center">Min / Maks</th>
+                <th class="py-2.5 px-4 text-center">Garansi</th>
+                <th class="py-2.5 px-4 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200 dark:divide-white/5">
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800/80">
               {#each services as srv}
-                <tr class="hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
-                  <td class="py-3 px-4 font-mono font-bold text-slate-900 dark:text-gray-200">{srv.id}</td>
+                <tr class="hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors">
+                  <td class="py-3 px-4 font-mono font-medium text-zinc-900 dark:text-zinc-200">{srv.id}</td>
                   <td class="py-3 px-4 max-w-sm">
-                    <div class="font-medium text-slate-900 dark:text-gray-100">{srv.name}</div>
-                    <div class="text-[11px] text-slate-500 dark:text-gray-400 mt-0.5 leading-relaxed">{srv.description}</div>
+                    <div class="font-medium text-zinc-900 dark:text-zinc-100">{srv.name}</div>
+                    <div class="text-[11px] text-zinc-500 mt-0.5 leading-relaxed">{srv.description}</div>
                   </td>
-                  <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                  <td class="py-3 px-4 text-right font-mono font-semibold text-zinc-900 dark:text-zinc-100">
                     {formatRupiah(srv.price_user?.amount || 0)}
                   </td>
-                  <td class="py-3 px-4 text-center font-mono text-slate-700 dark:text-gray-300">
+                  <td class="py-3 px-4 text-center font-mono text-zinc-600 dark:text-zinc-400">
                     {srv.min_order?.toLocaleString()} / {srv.max_order?.toLocaleString()}
                   </td>
                   <td class="py-3 px-4 text-center">
                     {#if srv.refill_supported}
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:border-indigo-500/30">
-                        🛡️ Refill {srv.refill_days} Hari
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+                        Refill {srv.refill_days} Hari
                       </span>
                     {:else}
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600 dark:bg-gray-700/40 dark:text-gray-400 border border-slate-300 dark:border-gray-600/40">
-                        Tanpa Refill
-                      </span>
+                      <span class="text-zinc-400 text-xs">Tanpa Garansi</span>
                     {/if}
                   </td>
                   <td class="py-3 px-4 text-center">
                     <button
                       type="button"
-                      class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-sm"
+                      class="h-7 px-3 rounded text-xs font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 transition-all"
                       on:click={() => activeTab = 'new-order'}
                     >
                       Pesan
@@ -144,16 +144,16 @@
     />
   {/if}
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-200 dark:border-white/5 py-6 px-4 text-center text-xs text-slate-500 dark:text-gray-500 transition-colors">
+  <!-- Footer (Linear style) -->
+  <footer class="border-t border-zinc-200 dark:border-zinc-800/80 py-5 px-4 text-xs text-zinc-400 dark:text-zinc-500 transition-colors">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div>
-        © 2026 <strong>Buzzer Media</strong>. Hak Cipta Dilindungi Undang-Undang.
+      <div class="flex items-center space-x-2">
+        <span class="font-semibold text-zinc-700 dark:text-zinc-300">buzzer.media</span>
+        <span>&middot;</span>
+        <span>Arsitektur Domain-Driven Design (DDD) & TDD</span>
       </div>
-      <div class="flex items-center space-x-4 text-slate-400 dark:text-gray-400">
-        <span>Arsitektur DDD & TDD</span>
-        <span>•</span>
-        <span>Adaptive Dual-Theme (Dark & Light)</span>
+      <div class="flex items-center space-x-3 text-zinc-400 font-mono text-[11px]">
+        <span>Cloudflare Workers & VPS Agnostic</span>
       </div>
     </div>
   </footer>

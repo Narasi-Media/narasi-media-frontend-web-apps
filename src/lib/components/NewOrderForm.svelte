@@ -43,7 +43,7 @@
     orderResult = null;
 
     if (!target.trim()) {
-      errorMessage = 'Target URL atau username tidak boleh kosong.';
+      errorMessage = 'Target link atau username tidak boleh kosong.';
       return;
     }
 
@@ -55,7 +55,7 @@
     }
 
     if (isInsufficient) {
-      errorMessage = 'Saldo tidak mencukupi. Silakan lakukan deposit terlebih dahulu.';
+      errorMessage = 'Saldo tidak mencukupi untuk membuat pesanan ini.';
       return;
     }
 
@@ -83,61 +83,64 @@
   }
 </script>
 
-<div class="glass-card rounded-2xl p-6 lg:p-8 space-y-6 transition-colors">
-  <div class="border-b border-slate-200 dark:border-white/5 pb-4">
-    <h2 class="text-xl font-bold text-slate-900 dark:text-gray-100 flex items-center space-x-2">
-      <span class="w-3 h-3 rounded-full bg-indigo-600 dark:bg-indigo-500"></span>
-      <span>Pemesanan Baru (Single Order)</span>
-    </h2>
-    <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">Pilih kategori, layanan, dan masukkan link postingan atau username target.</p>
+<div class="ui-card rounded-xl p-6 lg:p-8 space-y-6">
+  <div class="border-b border-zinc-200 dark:border-zinc-800 pb-4">
+    <div class="flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></span>
+      <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+        Buat Pesanan Baru
+      </h2>
+    </div>
+    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Pilih kategori, spesifikasi layanan, dan masukkan tautan target.</p>
   </div>
 
   {#if orderResult}
-    <!-- Success Feedback Alert -->
-    <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 space-y-2">
-      <div class="flex items-center space-x-2">
-        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <!-- Success Feedback Alert (shadcn style) -->
+    <div class="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs space-y-2">
+      <div class="flex items-center space-x-2 font-semibold">
+        <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
-        <span class="font-bold text-sm">Pesanan Berhasil Disubmit!</span>
+        <span>Pesanan Berhasil Diterima</span>
       </div>
-      <p class="text-xs">
-        ID Pesanan: <strong class="font-mono text-slate-900 dark:text-white">#{orderResult.id}</strong> • Total Biaya: <strong>{formatRupiah(calculatedPrice)}</strong>
+      <p class="text-[11px] text-zinc-600 dark:text-zinc-400 font-mono">
+        ID: <strong class="text-zinc-900 dark:text-zinc-100">#{orderResult.id}</strong> • Biaya: <strong>{formatRupiah(calculatedPrice)}</strong>
       </p>
-      <div class="pt-2">
+      <div class="pt-1">
         <button
           type="button"
-          class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-sm"
+          class="h-7 px-3 rounded text-xs font-medium bg-emerald-600 hover:bg-emerald-500 text-white transition-all"
           on:click={() => { orderResult = null; target = ''; }}
         >
-          + Buat Pesanan Lainnya
+          + Pesanan Baru
         </button>
       </div>
     </div>
   {/if}
 
   {#if errorMessage}
-    <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs flex items-center space-x-2">
-      <svg class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <div class="p-3.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-300 text-xs flex items-center space-x-2">
+      <svg class="w-4 h-4 text-rose-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
       </svg>
       <span>{errorMessage}</span>
     </div>
   {/if}
 
   <form on:submit|preventDefault={handleSubmit} class="space-y-5">
-    <!-- Category Selector -->
+    <!-- Category Selector (Minimalist Chips) -->
     <div>
-      <span class="block text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-2">1. Pilih Kategori</span>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <span class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Kategori Platform</span>
+      <div class="flex flex-wrap gap-1.5">
         {#each categories as cat}
           <button
             type="button"
-            class="px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all text-left flex items-center space-x-2 {selectedCategory === cat.id ? 'bg-indigo-50 border-indigo-600 text-indigo-700 dark:bg-indigo-600/20 dark:border-indigo-500 dark:text-white shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-slate-300 dark:bg-gray-800/40 dark:border-white/5 dark:text-gray-400 dark:hover:border-white/20'}"
+            class="px-3 py-1.5 rounded-md text-xs font-medium border transition-all {selectedCategory === cat.id ? 'bg-zinc-900 border-zinc-900 text-white dark:bg-zinc-100 dark:border-zinc-100 dark:text-zinc-900 shadow-sm' : 'bg-white border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700'}"
             on:click={() => selectedCategory = cat.id}
           >
-            <span class="w-2 h-2 rounded-full {selectedCategory === cat.id ? 'bg-indigo-600 dark:bg-indigo-400 animate-pulse' : 'bg-slate-400 dark:bg-gray-600'}"></span>
-            <span class="truncate">{cat.name}</span>
+            {cat.name}
           </button>
         {/each}
       </div>
@@ -145,11 +148,11 @@
 
     <!-- Service Dropdown -->
     <div>
-      <label for="service-select" class="block text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-2">2. Pilih Layanan</label>
+      <label for="service-select" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Layanan Tersedia</label>
       <select
         id="service-select"
         bind:value={selectedServiceId}
-        class="w-full bg-slate-50 dark:bg-gray-900 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-medium"
+        class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3.5 py-2.5 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-500 transition-all font-medium"
       >
         {#each filteredServices as srv}
           <option value={srv.id}>
@@ -159,35 +162,26 @@
       </select>
     </div>
 
-    <!-- Service Spec Details Card -->
+    <!-- Service Spec Details Card (Linear style inset) -->
     {#if currentService}
-      <div class="bg-slate-50 dark:bg-gradient-to-r dark:from-gray-900/90 dark:to-gray-800/60 border border-slate-200 dark:border-white/10 rounded-xl p-4 space-y-3 transition-colors">
-        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-          <div class="flex items-center space-x-4">
-            <div>
-              <span class="text-slate-500 dark:text-gray-400 font-medium">Min:</span>
-              <span class="text-slate-900 dark:text-gray-200 font-bold ml-1">{currentService.min_order?.toLocaleString()}</span>
-            </div>
-            <div>
-              <span class="text-slate-500 dark:text-gray-400 font-medium">Maks:</span>
-              <span class="text-slate-900 dark:text-gray-200 font-bold ml-1">{currentService.max_order?.toLocaleString()}</span>
-            </div>
-            <div>
-              <span class="text-slate-500 dark:text-gray-400 font-medium">Harga/1K:</span>
-              <span class="text-emerald-600 dark:text-emerald-400 font-bold ml-1">{formatRupiah(pricePerK)}</span>
-            </div>
+      <div class="ui-inset rounded-lg p-3.5 space-y-2 text-xs">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center space-x-4 text-zinc-600 dark:text-zinc-400">
+            <div>Min: <strong class="text-zinc-900 dark:text-zinc-100 font-mono">{currentService.min_order?.toLocaleString()}</strong></div>
+            <div>Maks: <strong class="text-zinc-900 dark:text-zinc-100 font-mono">{currentService.max_order?.toLocaleString()}</strong></div>
+            <div>Harga/1K: <strong class="text-emerald-600 dark:text-emerald-400 font-mono">{formatRupiah(pricePerK)}</strong></div>
           </div>
           {#if currentService.refill_supported}
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-300 dark:border-indigo-500/30">
-              🛡️ Refill {currentService.refill_days} Hari
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-zinc-200/60 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-300/60 dark:border-zinc-700">
+              Garansi Refill {currentService.refill_days} Hari
             </span>
           {:else}
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600 dark:bg-gray-700/50 dark:text-gray-400 border border-slate-300 dark:border-gray-600">
-              Tanpa Refill
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono text-zinc-400 dark:text-zinc-500">
+              Tanpa Garansi
             </span>
           {/if}
         </div>
-        <p class="text-xs text-slate-600 dark:text-gray-400 border-t border-slate-200 dark:border-white/5 pt-2 leading-relaxed">
+        <p class="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed border-t border-zinc-200 dark:border-zinc-800 pt-2">
           {currentService.description}
         </p>
       </div>
@@ -195,64 +189,57 @@
 
     <!-- Target Link / Username -->
     <div>
-      <label for="order-target" class="block text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-2">3. Data Target (Link / Username)</label>
+      <label for="order-target" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Target URL / Akun</label>
       <input
         id="order-target"
         type="text"
         bind:value={target}
-        placeholder="https://www.instagram.com/p/... atau username"
-        class="w-full bg-slate-50 dark:bg-gray-900 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-gray-200 placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono"
+        placeholder="https://instagram.com/akun_target atau username"
+        class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3.5 py-2.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:border-zinc-500 transition-all font-mono"
         required
       />
     </div>
 
     <!-- Quantity & Real-time Total Price Calculator -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
       <div>
-        <label for="order-quantity" class="block text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-2">4. Jumlah Pesan</label>
+        <label for="order-quantity" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Jumlah</label>
         <input
           id="order-quantity"
           type="number"
           bind:value={quantity}
           min={currentService?.min_order || 1}
           max={currentService?.max_order || 100000}
-          class="w-full bg-slate-50 dark:bg-gray-900 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono font-bold"
+          class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3.5 py-2.5 text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-500 transition-all"
           required
         />
       </div>
 
       <!-- Real-time Price Preview Box -->
-      <div class="bg-slate-100 dark:bg-gray-900/80 border border-slate-200 dark:border-white/10 rounded-xl p-3 flex flex-col justify-center transition-colors">
-        <div class="text-[11px] text-slate-500 dark:text-gray-400 font-medium">Estimasi Total Harga:</div>
-        <div class="text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-0.5">
+      <div class="ui-inset rounded-lg p-3 flex flex-col justify-center">
+        <div class="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Total Biaya</div>
+        <div class="text-lg font-bold font-mono text-zinc-900 dark:text-zinc-100">
           {formatRupiah(calculatedPrice)}
         </div>
         {#if isInsufficient}
-          <div class="text-[10px] text-rose-600 dark:text-rose-400 font-semibold mt-1 flex items-center space-x-1">
-            <span>⚠️ Saldo kurang Rp {formatRupiah(calculatedPrice - userBalance)}</span>
+          <div class="text-[10px] text-rose-500 font-medium mt-0.5">
+            Saldo kurang Rp {formatRupiah(calculatedPrice - userBalance)}
           </div>
         {/if}
       </div>
     </div>
 
-    <!-- Submit Button -->
+    <!-- Submit Button (High-End Solid Linear / Vercel style) -->
     <div class="pt-2">
       <button
         type="submit"
         disabled={isSubmitting || isInsufficient}
-        class="w-full py-3.5 px-6 rounded-xl text-sm font-bold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 text-white shadow-lg shadow-indigo-600/30 active:scale-[0.99] transition-all flex items-center justify-center space-x-2"
+        class="w-full h-10 rounded-lg text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 disabled:opacity-40 transition-all shadow-sm flex items-center justify-center space-x-2"
       >
         {#if isSubmitting}
-          <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-          </svg>
           <span>Memproses Pesanan...</span>
         {:else}
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Konfirmasi & Buat Pesanan ({formatRupiah(calculatedPrice)})</span>
+          <span>Submit Pesanan &middot; {formatRupiah(calculatedPrice)}</span>
         {/if}
       </button>
     </div>

@@ -73,50 +73,52 @@
     }, 4000);
   }
 
-  function getStatusBadge(status) {
+  function getStatusDot(status) {
     switch (status) {
       case 'success':
-        return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
+        return 'bg-emerald-500';
       case 'processing':
-        return 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 animate-pulse';
+        return 'bg-blue-500 animate-pulse';
       case 'pending':
-        return 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20';
+        return 'bg-amber-500';
       case 'partial':
-        return 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20';
+        return 'bg-orange-500';
       case 'error':
       case 'canceled':
-        return 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20';
+        return 'bg-rose-500';
       default:
-        return 'bg-slate-500/10 text-slate-600 dark:text-gray-400 border-slate-500/20';
+        return 'bg-zinc-400';
     }
   }
 </script>
 
-<div class="glass-card rounded-2xl p-6 lg:p-8 space-y-6 transition-colors">
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-white/5 pb-4">
+<div class="ui-card rounded-xl p-6 lg:p-8 space-y-5">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
     <div>
-      <h2 class="text-xl font-bold text-slate-900 dark:text-gray-100 flex items-center space-x-2">
-        <span class="w-3 h-3 rounded-full bg-emerald-600 dark:bg-emerald-500"></span>
-        <span>Riwayat Pesanan</span>
-      </h2>
-      <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">Lacak status proses pesanan, jumlah awal, sisa pengiriman, dan klaim garansi refill.</p>
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></span>
+        <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+          Riwayat Transaksi & Garansi
+        </h2>
+      </div>
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Status pengiriman pesanan, progress count, dan klaim garansi refill.</p>
     </div>
 
-    <!-- Search Input -->
-    <div class="w-full sm:w-64">
+    <!-- Search Input (shadcn style) -->
+    <div class="w-full sm:w-60">
       <input
         type="text"
         bind:value={searchQuery}
-        placeholder="Cari ID / Link Target..."
-        class="w-full bg-slate-50 dark:bg-gray-900 border border-slate-300 dark:border-white/10 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-gray-200 placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-all font-mono"
+        placeholder="Filter ID / link target..."
+        class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:border-zinc-500 font-mono"
       />
     </div>
   </div>
 
-  <!-- Filter Status Tabs -->
-  <div class="flex flex-wrap gap-1.5 border-b border-slate-200 dark:border-white/5 pb-3">
+  <!-- Filter Status Segmented Buttons -->
+  <div class="flex flex-wrap gap-1 border-b border-zinc-200 dark:border-zinc-800 pb-3 text-xs">
     {#each [
-      { id: 'all', label: 'Semua Status' },
+      { id: 'all', label: 'Semua' },
       { id: 'pending', label: 'Pending' },
       { id: 'processing', label: 'Processing' },
       { id: 'success', label: 'Success' },
@@ -125,7 +127,7 @@
     ] as tab}
       <button
         type="button"
-        class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all {activeFilter === tab.id ? 'bg-indigo-50 border-indigo-600 text-indigo-700 dark:bg-indigo-600/30 dark:border-indigo-500 dark:text-white shadow-sm' : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900 dark:bg-gray-800/30 dark:border-white/5 dark:text-gray-400 dark:hover:text-gray-200'}"
+        class="px-2.5 py-1 rounded-md text-xs font-medium transition-all {activeFilter === tab.id ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'}"
         on:click={() => activeFilter = tab.id}
       >
         {tab.label}
@@ -134,65 +136,67 @@
   </div>
 
   {#if refillSuccessId}
-    <div class="p-3 rounded-xl bg-indigo-50 text-indigo-800 dark:bg-indigo-500/10 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/30 text-xs flex items-center space-x-2 animate-bounce">
-      <span>🛡️ Permintaan Refill untuk pesanan #{refillSuccessId} telah dikirim ke server provider.</span>
+    <div class="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs text-zinc-800 dark:text-zinc-200 flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+      <span>Permintaan Refill untuk pesanan #{refillSuccessId} telah diteruskan ke server provider.</span>
     </div>
   {/if}
 
   <!-- DataGrid Table -->
   <div class="overflow-x-auto -mx-6 lg:-mx-8">
-    <table class="w-full text-left text-xs text-slate-700 dark:text-gray-300 min-w-[750px]">
-      <thead class="bg-slate-100 dark:bg-gray-900/80 text-slate-600 dark:text-gray-400 font-semibold border-y border-slate-200 dark:border-white/5 uppercase tracking-wider text-[10px]">
+    <table class="w-full text-left text-xs text-zinc-600 dark:text-zinc-300 min-w-[750px]">
+      <thead class="bg-zinc-50 dark:bg-zinc-900/60 text-zinc-500 dark:text-zinc-400 font-medium border-y border-zinc-200 dark:border-zinc-800 text-[11px]">
         <tr>
-          <th class="py-3 px-4">ID / Waktu</th>
-          <th class="py-3 px-4">Layanan</th>
-          <th class="py-3 px-4">Target Link</th>
-          <th class="py-3 px-4 text-center">Jumlah / Sisa</th>
-          <th class="py-3 px-4 text-right">Harga</th>
-          <th class="py-3 px-4 text-center">Status</th>
-          <th class="py-3 px-4 text-center">Aksi</th>
+          <th class="py-2.5 px-4">ID & Waktu</th>
+          <th class="py-2.5 px-4">Layanan</th>
+          <th class="py-2.5 px-4">Target Link</th>
+          <th class="py-2.5 px-4 text-center">Jumlah / Sisa</th>
+          <th class="py-2.5 px-4 text-right">Biaya</th>
+          <th class="py-2.5 px-4 text-center">Status</th>
+          <th class="py-2.5 px-4 text-center">Aksi</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-slate-200 dark:divide-white/5">
+      <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800/80">
         {#each filteredOrders as order}
-          <tr class="hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
+          <tr class="hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors">
             <td class="py-3 px-4 font-mono">
-              <div class="font-bold text-slate-900 dark:text-gray-200">{order.id}</div>
-              <div class="text-[10px] text-slate-400 dark:text-gray-500">{order.created_at}</div>
+              <div class="font-medium text-zinc-900 dark:text-zinc-100">{order.id}</div>
+              <div class="text-[10px] text-zinc-400">{order.created_at}</div>
             </td>
             <td class="py-3 px-4 max-w-xs">
-              <span class="font-medium text-slate-800 dark:text-gray-200 truncate block">{order.service_name}</span>
+              <span class="font-medium text-zinc-900 dark:text-zinc-200 truncate block">{order.service_name}</span>
             </td>
-            <td class="py-3 px-4 font-mono max-w-[200px] truncate text-indigo-600 dark:text-indigo-400">
-              <a href={order.target} target="_blank" rel="noreferrer" class="hover:underline flex items-center space-x-1">
+            <td class="py-3 px-4 font-mono max-w-[200px] truncate">
+              <a href={order.target} target="_blank" rel="noreferrer" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 underline">
                 <span class="truncate">{order.target}</span>
               </a>
             </td>
             <td class="py-3 px-4 text-center font-mono">
-              <div class="font-bold text-slate-900 dark:text-gray-100">{order.quantity?.toLocaleString()}</div>
+              <div class="font-semibold text-zinc-900 dark:text-zinc-100">{order.quantity?.toLocaleString()}</div>
               {#if order.remains > 0}
-                <div class="text-[10px] text-orange-500 dark:text-orange-400 font-medium">Sisa: {order.remains}</div>
+                <div class="text-[10px] text-zinc-400 font-normal">Sisa: {order.remains}</div>
               {/if}
             </td>
-            <td class="py-3 px-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">
+            <td class="py-3 px-4 text-right font-mono font-semibold text-zinc-900 dark:text-zinc-100">
               {formatRupiah(order.total_price?.amount || 0)}
             </td>
             <td class="py-3 px-4 text-center">
-              <span class="inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider {getStatusBadge(order.status)}">
-                {order.status}
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">
+                <span class="w-1.5 h-1.5 rounded-full mr-1.5 {getStatusDot(order.status)}"></span>
+                <span class="capitalize">{order.status}</span>
               </span>
             </td>
             <td class="py-3 px-4 text-center">
               {#if order.status === 'success' && order.refill_supported}
                 <button
                   type="button"
-                  class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white border border-indigo-200 dark:bg-indigo-600/30 dark:hover:bg-indigo-600 dark:text-indigo-300 dark:hover:text-white dark:border-indigo-500/30 transition-all"
+                  class="h-6 px-2.5 rounded text-[11px] font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 transition-all"
                   on:click={() => handleRefill(order.id)}
                 >
-                  🛡️ Refill
+                  Refill
                 </button>
               {:else}
-                <span class="text-slate-400 dark:text-gray-600 text-[11px]">-</span>
+                <span class="text-zinc-400 text-xs">-</span>
               {/if}
             </td>
           </tr>

@@ -88,60 +88,59 @@
 </script>
 
 <!-- Modal Overlay -->
-<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 dark:bg-black/80 backdrop-blur-md">
-  <div class="relative w-full max-w-lg bg-white dark:bg-gray-950 border border-slate-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-slate-800 dark:text-gray-100 transition-colors">
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm">
+  <div class="relative w-full max-w-md bg-white dark:bg-[#121215] border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto text-zinc-900 dark:text-zinc-100 transition-colors">
     <!-- Header -->
-    <div class="flex items-center justify-between border-b border-slate-200 dark:border-white/5 pb-4">
+    <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
       <div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-gray-100 flex items-center space-x-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Deposit Saldo via QRIS Manual</span>
+        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
+          <span>Deposit Saldo QRIS</span>
         </h3>
-        <p class="text-xs text-slate-500 dark:text-gray-400 mt-0.5">Scan barcode QRIS dari BCA, Mandiri, Dana, GoPay, OVO, ShopeePay</p>
+        <p class="text-[11px] text-zinc-500 mt-0.5">BCA, Mandiri, BRI, Dana, GoPay, OVO, ShopeePay</p>
       </div>
       <button
         type="button"
-        class="text-slate-400 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-200 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+        class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         on:click={closeModal}
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
     </div>
 
     {#if errorMessage}
-      <div class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs flex items-center space-x-2">
-        <span>⚠️ {errorMessage}</span>
+      <div class="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs">
+        {errorMessage}
       </div>
     {/if}
 
     <!-- STEP 1: Input Nominal -->
     {#if step === 1}
-      <div class="space-y-5">
+      <div class="space-y-4">
         <div>
-          <label for="deposit-amount-input" class="block text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-2">Pilih / Masukkan Nominal Deposit</label>
+          <label for="deposit-amount-input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">Nominal Deposit</label>
           <div class="relative">
-            <span class="absolute left-4 top-3.5 text-sm font-bold text-slate-400 dark:text-gray-500 font-mono">Rp</span>
+            <span class="absolute left-3 top-2 text-xs font-mono font-bold text-zinc-400">Rp</span>
             <input
               id="deposit-amount-input"
               type="number"
               bind:value={amount}
               min="10000"
               step="5000"
-              class="w-full bg-slate-50 dark:bg-gray-900 border border-slate-300 dark:border-white/10 rounded-xl py-3 pl-12 pr-4 text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400 focus:outline-none focus:border-indigo-500 transition-all"
+              class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg py-2 pl-9 pr-3 text-sm font-bold font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-500 transition-all"
             />
           </div>
         </div>
 
         <!-- Quick Select Buttons -->
         <div>
-          <span class="block text-[11px] text-slate-500 dark:text-gray-400 font-medium mb-2">Pilihan Cepat:</span>
-          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
             {#each quickAmounts as q}
               <button
                 type="button"
-                class="py-2 px-1 text-xs font-semibold rounded-xl border transition-all {amount === q ? 'bg-indigo-50 border-indigo-600 text-indigo-700 dark:bg-indigo-600/30 dark:border-indigo-500 dark:text-white shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900 dark:bg-gray-800/40 dark:border-white/5 dark:text-gray-400 dark:hover:text-gray-200'}"
+                class="py-1.5 px-1 text-[11px] font-mono rounded border transition-all {amount === q ? 'bg-zinc-900 border-zinc-900 text-white dark:bg-zinc-100 dark:border-zinc-100 dark:text-zinc-900 font-semibold' : 'bg-white border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400'}"
                 on:click={() => amount = q}
               >
                 {formatRupiah(q)}
@@ -151,51 +150,42 @@
         </div>
 
         <!-- Promo Bonus Note -->
-        <div class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-500/20 rounded-xl p-3.5 text-xs text-indigo-900 dark:text-indigo-300 flex items-start space-x-2 transition-colors">
-          <span class="text-base">🎁</span>
-          <div>
-            <strong class="font-bold">Promo Bonus Saldo +5%:</strong>
-            <p class="text-indigo-700 dark:text-indigo-400/90 text-[11px] mt-0.5">
-              Deposit Rp {formatRupiah(amount)} akan menghasilkan saldo masuk sebesar <strong>{formatRupiah(Math.floor(amount * 1.05))}</strong>.
-            </p>
-          </div>
+        <div class="ui-inset rounded-lg p-3 text-xs flex items-center justify-between">
+          <span class="text-zinc-500 dark:text-zinc-400">Bonus Saldo (+5%):</span>
+          <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400">
+            +{formatRupiah(Math.floor(amount * 0.05))}
+          </span>
         </div>
 
         <button
           type="button"
-          class="w-full py-3.5 px-6 rounded-xl text-sm font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
+          class="w-full h-10 rounded-lg text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 transition-all shadow-sm flex items-center justify-center space-x-2 disabled:opacity-40"
           disabled={isSubmitting}
           on:click={handleCreateDeposit}
         >
-          <span>Lanjutkan ke Pembayaran QRIS</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
+          <span>Lanjutkan ke QRIS</span>
         </button>
       </div>
     {/if}
 
     <!-- STEP 2: QRIS Barcode & Upload Bukti Pembayaran -->
     {#if step === 2 && depositData}
-      <div class="space-y-5">
+      <div class="space-y-4">
         <!-- Transfer Exact Amount Card -->
-        <div class="bg-slate-100 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-950 border border-slate-200 dark:border-white/10 rounded-2xl p-5 text-center space-y-2 transition-colors">
-          <div class="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wider">Transfer Tepat Hingga 3 Digit Terakhir:</div>
-          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono tracking-tight bg-white dark:bg-black/40 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-white/5 inline-block shadow-sm">
+        <div class="ui-inset rounded-lg p-3 text-center space-y-1">
+          <div class="text-[10px] text-zinc-500 uppercase tracking-wider font-medium">Total Yang Harus Ditransfer:</div>
+          <div class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 font-mono tracking-tight">
             {formatRupiah(depositData.total_to_pay?.amount || (amount + depositData.unique_code))}
           </div>
-          <div class="text-[11px] text-amber-600 dark:text-amber-400 font-semibold">
-            ⚠️ Termasuk kode unik: <strong>{depositData.unique_code}</strong> (agar verifikasi cepat)
+          <div class="text-[11px] text-zinc-500 font-medium">
+            Termasuk 3-digit kode unik: <strong class="text-zinc-900 dark:text-zinc-100 font-mono">{depositData.unique_code}</strong>
           </div>
         </div>
 
-        <!-- Official QRIS Barcode Render -->
-        <div class="bg-white p-5 rounded-2xl flex flex-col items-center justify-center space-y-2 max-w-xs mx-auto shadow-xl border border-slate-200">
-          <div class="text-xs font-black text-gray-900 tracking-wider uppercase flex items-center space-x-1">
-            <span>QRIS BUZZER MEDIA</span>
-          </div>
-          <!-- Clean SVG QR Code Representation -->
-          <svg class="w-48 h-48" viewBox="0 0 100 100" fill="black">
+        <!-- QRIS Barcode Container -->
+        <div class="bg-white p-4 rounded-lg flex flex-col items-center justify-center space-y-1.5 max-w-[220px] mx-auto border border-zinc-200 shadow-sm">
+          <div class="text-[10px] font-bold text-zinc-900 tracking-wider">QRIS STANDAR NASIONAL</div>
+          <svg class="w-40 h-40" viewBox="0 0 100 100" fill="black">
             <rect x="5" y="5" width="25" height="25" fill="none" stroke="black" stroke-width="4" />
             <rect x="11" y="11" width="13" height="13" fill="black" />
             <rect x="70" y="5" width="25" height="25" fill="none" stroke="black" stroke-width="4" />
@@ -219,45 +209,43 @@
             <rect x="78" y="74" width="6" height="6" />
             <rect x="64" y="86" width="6" height="6" />
           </svg>
-          <div class="text-[10px] text-gray-600 font-semibold uppercase">NMID: ID20261122001</div>
+          <div class="text-[9px] text-zinc-500 font-mono">NMID: ID20261122001</div>
         </div>
 
         <!-- Upload Proof Section -->
-        <div class="space-y-3 pt-2">
+        <div class="space-y-3 pt-1">
           <div>
-            <label for="sender-name-input" class="block text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">Nama Akun Pengirim Rekening / E-Wallet</label>
+            <label for="sender-name-input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Nama Pengirim</label>
             <input
               id="sender-name-input"
               type="text"
               bind:value={senderName}
-              placeholder="Contoh: Budi Santoso (BCA) / Akun Dana"
-              class="w-full bg-slate-50 dark:bg-gray-900 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-gray-200 focus:outline-none focus:border-indigo-500 transition-all font-medium"
+              placeholder="Nama pemilik rekening / e-wallet"
+              class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-500 transition-all font-medium"
             />
           </div>
 
           <div>
-            <label for="proof-file-input" class="block text-xs font-bold text-slate-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">Unggah Foto / Screenshot Bukti Struk</label>
+            <label for="proof-file-input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Foto Bukti Struk</label>
             <input
               id="proof-file-input"
               type="file"
               accept="image/*"
               on:change={handleFileChange}
-              class="w-full text-xs text-slate-600 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-indigo-600/30 dark:file:text-indigo-300 dark:hover:file:bg-indigo-600 dark:hover:file:text-white transition-all cursor-pointer"
+              class="w-full text-xs text-zinc-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-medium file:bg-zinc-100 file:text-zinc-800 dark:file:bg-zinc-800 dark:file:text-zinc-200 hover:file:bg-zinc-200 cursor-pointer"
             />
           </div>
 
           {#if proofImagePreview}
-            <div class="mt-2 p-2 bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-xl flex items-center space-x-3">
-              <img src={proofImagePreview} alt="Preview Bukti" class="w-16 h-16 object-cover rounded-lg border border-slate-300 dark:border-white/10" />
-              <div class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
-                ✓ Bukti foto siap diunggah
-              </div>
+            <div class="p-2 ui-inset rounded-lg flex items-center space-x-2 text-xs">
+              <img src={proofImagePreview} alt="Preview Bukti" class="w-10 h-10 object-cover rounded border border-zinc-300 dark:border-zinc-700" />
+              <span class="text-zinc-600 dark:text-zinc-300 font-medium">Foto siap dikirim</span>
             </div>
           {/if}
 
           <button
             type="button"
-            class="w-full py-3.5 px-6 rounded-xl text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 mt-4"
+            class="w-full h-10 rounded-lg text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 transition-all shadow-sm flex items-center justify-center space-x-2 disabled:opacity-40 mt-2"
             disabled={isSubmitting}
             on:click={handleSubmitProof}
           >
@@ -273,21 +261,21 @@
 
     <!-- STEP 3: Completed / Waiting Verification -->
     {#if step === 3}
-      <div class="text-center py-6 space-y-4">
-        <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center border border-emerald-500/30">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      <div class="text-center py-4 space-y-3">
+        <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center border border-emerald-500/20">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </div>
         <div>
-          <h4 class="text-lg font-bold text-slate-900 dark:text-gray-100">Bukti Pembayaran Terkirim!</h4>
-          <p class="text-xs text-slate-600 dark:text-gray-400 mt-1 max-w-sm mx-auto leading-relaxed">
-            Invoice Anda sedang dalam antrean verifikasi staf keuangan admin. Saldo sebesar <strong>{formatRupiah(Math.floor(amount * 1.05))}</strong> akan langsung masuk setelah diverifikasi (estimasi 1 - 5 menit).
+          <h4 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Bukti Pembayaran Diterima</h4>
+          <p class="text-xs text-zinc-500 mt-1 max-w-xs mx-auto leading-relaxed">
+            Invoice Anda dalam antrean verifikasi staf admin. Saldo sebesar <strong>{formatRupiah(Math.floor(amount * 1.05))}</strong> akan langsung aktif setelah disetujui.
           </p>
         </div>
         <button
           type="button"
-          class="py-2.5 px-6 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md"
+          class="h-9 px-4 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 transition-all shadow-sm"
           on:click={closeModal}
         >
           Selesai & Tutup
