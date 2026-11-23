@@ -6,8 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build --mode production",
     "preview": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "deploy:dev": "npm run build:dev && wrangler deploy --name narasi-media-web-dev",
+    "deploy:prod": "npm run build:prod && wrangler deploy --name narasi-media-web"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
