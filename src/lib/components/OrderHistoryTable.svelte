@@ -160,7 +160,14 @@
         {#each filteredOrders as order}
           <tr class="hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors">
             <td class="py-3 px-4 font-mono">
-              <div class="font-medium text-zinc-900 dark:text-zinc-100">{order.id}</div>
+              <div class="font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-1.5">
+                <span>{order.id}</span>
+                {#if order.id.startsWith('DEMO') || order.is_demo}
+                  <span class="px-1.5 py-0.2 rounded text-[9px] font-bold font-mono bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+                    DEMO
+                  </span>
+                {/if}
+              </div>
               <div class="text-[10px] text-zinc-400">{order.created_at}</div>
             </td>
             <td class="py-3 px-4 max-w-xs">

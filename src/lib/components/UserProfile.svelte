@@ -11,6 +11,7 @@
 
   export let stats = {};
   export let userId = 'regiami';
+  export let isDemo = true;
 
   const dispatch = createEventDispatcher();
 
@@ -274,6 +275,11 @@
             <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
               {profile.role || 'Member'}
             </span>
+            {#if isDemo || profile.username === 'regiami'}
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+                ⚡ AKUN DEMO
+              </span>
+            {/if}
           </div>
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-500 dark:text-zinc-400">
             <span class="font-mono">@{profile.username}</span>

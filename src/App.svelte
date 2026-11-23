@@ -8,17 +8,20 @@
   import OrderHistoryTable from './lib/components/OrderHistoryTable.svelte';
   import UserProfile from './lib/components/UserProfile.svelte';
   import DepositModal from './lib/components/DepositModal.svelte';
+  import LoginModal from './lib/components/LoginModal.svelte';
   import { fetchDashboard, fetchServices, formatRupiah } from './lib/api.js';
 
   let activeTab = 'company';
   let isDepositModalOpen = false;
+  let isLoginModalOpen = false;
+  let isDemoAccount = true;
   let stats = {
     balance: 500000,
     total_orders: 14,
     total_spent: 1250000,
     total_deposit: 1500000,
     username: 'regiami',
-    full_name: 'Regi Ami',
+    full_name: 'Regi Ami (Demo)',
   };
   let services = [];
 
@@ -29,9 +32,14 @@
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
-    stats = await fetchDashboard('regiami');
+    await loadUserData('regiami');
     services = await fetchServices();
   });
+
+  async function loadUserData(username) {
+    stats = await fetchDashboard(username);
+    isDemoAccount = username === 'regiami' || username.includes('demo');
+  }
 
   function handleTabChange(event) {
     activeTab = event.detail;
@@ -47,6 +55,13 @@
   function handleDepositSubmitted(event) {
     // Deposit waiting for admin approval
   }
+
+  function handleLoginSuccess(detail) {
+    stats.username = detail.username;
+    stats.full_name = detail.fullName;
+    isDemoAccount = detail.isDemo;
+    loadUserData(detail.username);
+  }
 </script>
 
 <div class="min-h-screen bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 flex flex-col font-sans transition-colors duration-150">
@@ -55,9 +70,33 @@
     bind:activeTab
     balance={stats.balance}
     username={stats.username}
+    isDemo={isDemoAccount}
     on:tabChange={handleTabChange}
     on:openDeposit={() => isDepositModalOpen = true}
+    on:openLogin={() => isLoginModalOpen = true}
   />
+
+  {#if isDemoAccount}
+    <div class="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 text-xs text-amber-800 dark:text-amber-300">
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center space-x-2">
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-900 dark:text-amber-200 border border-amber-500/30">
+            ⚡ AKUN DEMO (@{stats.username})
+          </span>
+          <span>
+            Mode Simulasi Aktif: Saldo Rp 500.000 & semua pesanan/deposit otomatis berlabel <strong>[DEMO]</strong>.
+          </span>
+        </div>
+        <button
+          type="button"
+          on:click={() => isLoginModalOpen = true}
+          class="text-[11px] underline font-semibold hover:text-amber-950 dark:hover:text-amber-100"
+        >
+          Masuk / Ganti Akun &rarr;
+        </button>
+      </div>
+    </div>
+  {/if}
 
   <!-- Main Content Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8">
@@ -73,6 +112,7 @@
       <NewOrderForm
         userBalance={stats.balance}
         userId={stats.username}
+        isDemo={isDemoAccount}
         on:orderCreated={handleOrderCreated}
       />
     {:else if activeTab === 'mass-order'}
@@ -146,6 +186,7 @@
       <UserProfile
         {stats}
         userId={stats.username}
+        isDemo={isDemoAccount}
         on:backToDashboard={() => activeTab = 'dashboard'}
         on:openDeposit={() => isDepositModalOpen = true}
         on:updateProfile={(e) => stats.full_name = e.detail.fullName}
@@ -158,10 +199,18 @@
   {#if isDepositModalOpen}
     <DepositModal
       userId={stats.username}
+      isDemo={isDemoAccount}
       on:close={() => isDepositModalOpen = false}
       on:depositSubmitted={handleDepositSubmitted}
     />
   {/if}
+
+  <!-- Login Modal -->
+  <LoginModal
+    bind:show={isLoginModalOpen}
+    currentUsername={stats.username}
+    on:loginSuccess={(e) => handleLoginSuccess(e.detail)}
+  />
 
   <!-- Footer -->
   <footer class="border-t border-zinc-200 dark:border-zinc-800/80 py-5 px-4 text-xs text-zinc-500 dark:text-zinc-400 transition-colors">

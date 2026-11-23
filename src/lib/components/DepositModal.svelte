@@ -3,6 +3,7 @@
   import { requestDeposit, submitDepositProof, formatRupiah } from '../api.js';
 
   export let userId = 'regiami';
+  export let isDemo = true;
 
   const dispatch = createEventDispatcher();
 
@@ -51,7 +52,8 @@
       const res = await requestDeposit({
         user_id: userId,
         method: 'manual_qris',
-        amount: parseInt(amount)
+        amount: parseInt(amount),
+        is_demo: isDemo
       });
 
       if (res.success) {
@@ -132,9 +134,16 @@
     <!-- Header -->
     <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
       <div>
-        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center space-x-2">
-          <span>Deposit Saldo QRIS</span>
-        </h3>
+        <div class="flex items-center space-x-2">
+          <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+            Deposit Saldo QRIS
+          </h3>
+          {#if isDemo}
+            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+              ⚡ MODE DEMO
+            </span>
+          {/if}
+        </div>
         <p class="text-[11px] text-zinc-500 mt-0.5">BCA, Mandiri, BRI, Dana, GoPay, OVO, ShopeePay</p>
       </div>
       <button

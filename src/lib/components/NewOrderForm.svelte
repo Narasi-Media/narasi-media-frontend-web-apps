@@ -4,6 +4,7 @@
 
   export let userBalance = 500000;
   export let userId = 'regiami';
+  export let isDemo = true;
 
   const dispatch = createEventDispatcher();
 
@@ -92,12 +93,14 @@
 
     isSubmitting = true;
     try {
+      const isDemoOrder = isDemo || userId.toLowerCase().includes('demo') || userId === 'regiami';
       const res = await placeOrder({
         user_id: userId,
         service_id: selectedServiceId,
         target: target.trim(),
         quantity: parseInt(quantity),
-        custom_comments: customComments.trim() ? customComments.split('\n') : null,
+        is_demo: isDemoOrder,
+        custom_comments: isDemoOrder ? ['[DEMO TRANSACTION]'] : (customComments.trim() ? customComments.split('\n') : null),
       });
 
       if (res.success) {
@@ -115,14 +118,21 @@
 </script>
 
 <div class="ui-card rounded-xl p-6 lg:p-8 space-y-6">
-  <div class="border-b border-zinc-200 dark:border-zinc-800 pb-4">
-    <div class="flex items-center space-x-2">
-      <span class="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></span>
-      <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-        Buat Pesanan Baru
-      </h2>
+  <div class="border-b border-zinc-200 dark:border-zinc-800 pb-4 flex items-center justify-between">
+    <div>
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100"></span>
+        <h2 class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+          Buat Pesanan Baru
+        </h2>
+        {#if isDemo}
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+            ⚡ MODE SIMULASI DEMO
+          </span>
+        {/if}
+      </div>
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Pilih kategori, spesifikasi layanan, dan masukkan tautan target.</p>
     </div>
-    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Pilih kategori, spesifikasi layanan, dan masukkan tautan target.</p>
   </div>
 
   {#if orderResult}
@@ -291,6 +301,8 @@
       >
         {#if isSubmitting}
           <span>Memproses Pesanan...</span>
+        {:else if isDemo}
+          <span>⚡ Submit Pesanan (Mode Demo) &middot; {formatRupiah(calculatedPrice)}</span>
         {:else}
           <span>Submit Pesanan &middot; {formatRupiah(calculatedPrice)}</span>
         {/if}

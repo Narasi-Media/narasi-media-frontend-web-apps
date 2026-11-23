@@ -5,6 +5,7 @@
   export let activeTab = 'company';
   export let balance = 500000;
   export let username = 'regiami';
+  export let isDemo = true;
 
   const dispatch = createEventDispatcher();
 
@@ -216,7 +217,14 @@
           <!-- Balance & Quick Deposit -->
           <div class="flex items-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 pl-2.5 space-x-2 shadow-2xs">
             <div class="text-right">
-              <div class="text-[9px] uppercase tracking-wider font-semibold text-zinc-400">Saldo</div>
+              <div class="text-[9px] uppercase tracking-wider font-semibold text-zinc-400 flex items-center justify-end space-x-1">
+                <span>{isDemo ? 'Saldo Demo' : 'Saldo'}</span>
+                {#if isDemo}
+                  <span class="text-[8px] font-mono px-1 rounded bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold border border-amber-500/30">
+                    SIMULASI
+                  </span>
+                {/if}
+              </div>
               <div class="text-xs font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100">{formatRupiah(balance)}</div>
             </div>
             <button
@@ -256,11 +264,11 @@
             {/if}
           </button>
 
-          <!-- User Account Shortcut Button (Clearly Links to Personal User Profile) -->
+          <!-- User Account Shortcut Button + Demo Pill -->
           <button
             type="button"
             on:click={() => selectTab('profile')}
-            class="flex items-center space-x-2 pl-2 border-l border-zinc-200 dark:border-zinc-800 group focus:outline-none {activeTab === 'profile' ? 'opacity-100' : 'opacity-90 hover:opacity-100'}"
+            class="flex items-center space-x-1.5 pl-2 border-l border-zinc-200 dark:border-zinc-800 group focus:outline-none {activeTab === 'profile' ? 'opacity-100' : 'opacity-90 hover:opacity-100'}"
             title="Buka Profil Akun Pengguna"
           >
             <div class="w-7 h-7 rounded-full text-zinc-700 dark:text-zinc-300 font-mono text-[11px] font-bold flex items-center justify-center border transition-all {activeTab === 'profile' ? 'ring-2 ring-zinc-900 dark:ring-zinc-100 border-transparent bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900' : 'bg-zinc-200 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 group-hover:border-zinc-500'} uppercase">
@@ -269,12 +277,27 @@
             <div class="text-left hidden xl:block">
               <div class="text-[11px] font-semibold text-zinc-900 dark:text-zinc-100 leading-tight flex items-center space-x-1">
                 <span>@{username}</span>
+                {#if isDemo}
+                  <span class="text-[9px] font-mono px-1 rounded bg-amber-500/15 text-amber-700 dark:text-amber-400 font-bold border border-amber-500/30">
+                    DEMO
+                  </span>
+                {/if}
                 {#if activeTab === 'profile'}
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 {/if}
               </div>
-              <div class="text-[9px] text-zinc-400 font-mono">Profil Saya</div>
+              <div class="text-[9px] text-zinc-400 font-mono">{isDemo ? 'Akun Simulasi' : 'Profil Saya'}</div>
             </div>
+          </button>
+
+          <!-- Login / Switch Account Button -->
+          <button
+            type="button"
+            on:click={() => dispatch('openLogin')}
+            class="px-2 py-1 rounded-md text-[10px] font-mono font-medium bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 transition-colors"
+            title="Masuk atau ganti akun (Bisa login dengan Username saja)"
+          >
+            Ganti Akun
           </button>
         </div>
       </div>
