@@ -239,8 +239,8 @@
     <!-- GENERATED 3D HERO GRAPHIC DISPLAY WITH FLOATING HUD -->
     <div class="relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-2xl bg-zinc-950 group">
       <img
-        src="/buzzer_media_hero_banner.jpg"
-        alt="Buzzer Media Viral Growth Platform Architecture"
+        src="/narasi_media_hero_banner.jpg"
+        alt="Narasi Media Viral Growth Platform Architecture"
         class="w-full h-auto object-cover max-h-[480px] opacity-95 transition-transform duration-700 group-hover:scale-[1.01]"
       />
 
@@ -265,6 +265,161 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- PROFIL PERUSAHAAN & SEJARAH (ABOUT US) -->
+  <section id="tentang-pt" class="max-w-6xl mx-auto space-y-8 pt-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7 space-y-4">
+        <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-mono font-semibold">
+          <span>🏛️ PROFIL PERUSAHAAN</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
+          PT Narasi Media Solusindo
+        </h2>
+        <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          Didirikan pada tahun 2023 di Jakarta, <strong>PT Narasi Media Solusindo</strong> adalah perusahaan teknologi dan media digital terkemuka yang menyediakan infrastruktur akselerasi visibilitas media sosial, otomasi distribusi konten, dan jaringan narasi media profesional nomor satu di Indonesia.
+        </p>
+        <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+          Dengan arsitektur sistem berbasis cloud mikroservis terdistribusi dan koneksi API langsung ke jaringan media global, kami telah melayani lebih dari <strong>48.200+ pengguna aktif</strong>, ratusan agensi periklanan digital ternama, kreator konten, serta pelaku UMKM nasional dengan standar keandalan 99.98% uptime.
+        </p>
+
+        <!-- Company Metrics Highlights -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+          <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800">
+            <div class="text-xl font-black text-zinc-900 dark:text-zinc-100 font-mono">1.85M+</div>
+            <div class="text-[11px] text-zinc-500 mt-0.5">Pesanan Berhasil</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800">
+            <div class="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">99.98%</div>
+            <div class="text-[11px] text-zinc-500 mt-0.5">Server Uptime SLA</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 col-span-2 sm:col-span-1">
+            <div class="text-xl font-black text-blue-600 dark:text-blue-400 font-mono">48.200+</div>
+            <div class="text-[11px] text-zinc-500 mt-0.5">Member &amp; Reseller</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visi & Misi Card -->
+      <div class="lg:col-span-5 space-y-4 ui-card rounded-2xl p-6 lg:p-7 border border-zinc-200 dark:border-zinc-800 shadow-lg bg-zinc-50/60 dark:bg-zinc-900/30">
+        <div class="space-y-2">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wide">Visi Perusahaan</h3>
+          </div>
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Menjadi penyedia infrastruktur otomasi pertumbuhan media sosial dan ekosistem pemasaran digital paling andal, transparan, dan patuh regulasi di Asia Tenggara.
+          </p>
+        </div>
+
+        <div class="border-t border-zinc-200 dark:border-zinc-800/80 pt-4 space-y-2">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wide">Misi Utama</h3>
+          </div>
+          <ul class="text-xs text-zinc-600 dark:text-zinc-400 space-y-2 leading-relaxed">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-500 font-bold">&check;</span>
+              <span>Menyediakan layanan optimasi media sosial berkecepatan tinggi dengan harga tangan pertama tanpa perantara.</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-500 font-bold">&check;</span>
+              <span>Menjamin keamanan privasi klien 100% tanpa meminta password akun target.</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-500 font-bold">&check;</span>
+              <span>Memberikan garansi isi ulang (refill) otomatis untuk menjaga kepercayaan mitra jangka panjang.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEGALITAS RESMI & SERTIFIKASI BADAN USAHA -->
+  <section id="legalitas-resmi" class="max-w-6xl mx-auto space-y-6">
+    <div class="text-center max-w-2xl mx-auto space-y-2">
+      <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold">
+        <span>🛡️ LEGALITAS RESMI BADAN USAHA</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
+        Entitas Badan Usaha Terdaftar & Berizin
+      </h2>
+      <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+        Narasi Media beroperasi penuh secara resmi di bawah payung hukum Republik Indonesia dengan perizinan lengkap.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Legal Card 1 -->
+      <div class="ui-card p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2">
+        <div class="text-[10px] font-mono text-zinc-400 uppercase font-semibold">SK Kemenkumham RI</div>
+        <div class="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono">AHU-0038921.AH.01.01</div>
+        <p class="text-xs text-zinc-500 leading-relaxed">
+          Akta Pendirian Notaris &amp; Pengesahan Badan Hukum Perseroan Terbatas resmi Republik Indonesia.
+        </p>
+      </div>
+
+      <!-- Legal Card 2 -->
+      <div class="ui-card p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2">
+        <div class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 uppercase font-semibold">PSE Kominfo RI</div>
+        <div class="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono">008921.01/DJAI.PSE</div>
+        <p class="text-xs text-zinc-500 leading-relaxed">
+          Terdaftar resmi sebagai Penyelenggara Sistem Elektronik (PSE) Domestik di Kementerian Komunikasi &amp; Informatika.
+        </p>
+      </div>
+
+      <!-- Legal Card 3 -->
+      <div class="ui-card p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2">
+        <div class="text-[10px] font-mono text-zinc-400 uppercase font-semibold">Nomor Induk Berusaha (NIB)</div>
+        <div class="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono">9120008412891</div>
+        <p class="text-xs text-zinc-500 leading-relaxed">
+          Izin usaha berlaku efektif skala nasional untuk operasi portal web dan platform digital komersial.
+        </p>
+      </div>
+
+      <!-- Legal Card 4 -->
+      <div class="ui-card p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2">
+        <div class="text-[10px] font-mono text-blue-600 dark:text-blue-400 uppercase font-semibold">Klasifikasi KBLI</div>
+        <div class="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono">63122 &amp; 73100</div>
+        <p class="text-xs text-zinc-500 leading-relaxed">
+          KBLI 63122 (Portal Web Platform Digital) dan KBLI 73100 (Periklanan &amp; Riset Pemasaran Digital).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTION BRIDGE BANNER TO USER APP DASHBOARD -->
+  <section class="max-w-6xl mx-auto rounded-2xl p-6 sm:p-8 bg-zinc-900 dark:bg-zinc-950 text-white border border-zinc-800 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="space-y-2 text-center md:text-left">
+      <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-mono">
+        <span>● PORTAL PENGGUNA TERSEDIA</span>
+      </div>
+      <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-white">
+        Sudah Memiliki Akun Member Terdaftar?
+      </h3>
+      <p class="text-xs text-zinc-400 max-w-xl leading-relaxed">
+        Masuk langsung ke Dashboard Aplikasi untuk melihat saldo, memantau riwayat pesanan, atau melakukan deposit saldo instan melalui QRIS otomatis.
+      </p>
+    </div>
+    <div class="flex items-center space-x-3 flex-shrink-0">
+      <button
+        type="button"
+        on:click={() => goToApp('dashboard')}
+        class="px-5 py-2.5 rounded-xl bg-white hover:bg-zinc-100 text-zinc-900 font-bold text-xs shadow-md transition-all flex items-center space-x-2"
+      >
+        <span>Buka Dashboard Member</span>
+        <span>&rarr;</span>
+      </button>
+      <button
+        type="button"
+        on:click={() => goToApp('new-order')}
+        class="px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-semibold transition-all"
+      >
+        Pesan Baru
+      </button>
     </div>
   </section>
 
@@ -460,7 +615,7 @@
                 <div class="font-extrabold font-mono text-xs text-zinc-900 dark:text-zinc-100 flex items-center space-x-1.5">
                   <span>{simulatedLikes.toLocaleString()} Suka</span>
                   <span class="text-[10px] font-normal text-emerald-600 dark:text-emerald-400 font-sans">
-                    (+{simBoostPackage === 'starter' ? '1.2K' : simBoostPackage === 'viral' ? '12.4K' : '25K'} Buzzer)
+                    (+{simBoostPackage === 'starter' ? '1.2K' : simBoostPackage === 'viral' ? '12.4K' : '25K'} Interaksi)
                   </span>
                 </div>
                 <div class="text-[11px] font-mono text-zinc-500">
@@ -508,7 +663,7 @@
   <section class="max-w-5xl mx-auto space-y-6">
     <div class="text-center space-y-2">
       <h2 class="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
-        Perbandingan: Tanpa Buzzer vs Dengan Buzzer Media
+        Perbandingan: Sebelum vs Sesudah Optimasi Narasi Media
       </h2>
       <p class="text-xs sm:text-sm text-zinc-500">
         Geser slider di bawah ini untuk melihat kontras engagement dan daya tarik akun Anda.
@@ -552,7 +707,7 @@
         <div class="p-5 rounded-xl border-2 border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20 space-y-3 {compareSliderVal < 30 ? 'opacity-40' : 'opacity-100'} transition-opacity">
           <div class="flex items-center justify-between">
             <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500 text-white">
-              SESUDAH BOOST BUZZER MEDIA
+              SESUDAH BOOST NARASI MEDIA
             </span>
             <span class="text-xs text-emerald-500 font-mono font-bold">🔥 Viral Explore</span>
           </div>
@@ -754,11 +909,11 @@
       </button>
     </div>
     <p class="text-xs text-zinc-400 max-w-2xl leading-relaxed">
-      Hubungkan website atau aplikasi Anda ke sistem Buzzer Media untuk pemesanan otomatis dengan harga agen reseller termurah.
+      Hubungkan website atau aplikasi Anda ke sistem Narasi Media untuk pemesanan otomatis dengan harga agen reseller termurah.
     </p>
     <div class="p-4 rounded-xl bg-black/80 border border-zinc-800 font-mono text-[11px] text-zinc-300 overflow-x-auto space-y-1">
       <div class="text-zinc-500"># Contoh request submit order via cURL</div>
-      <div>curl -X POST https://api.buzzer.media/api/v2 \</div>
+      <div>curl -X POST https://api.narasi.media/api/v2 \</div>
       <div class="pl-4">-d "key=YOUR_API_KEY" \</div>
       <div class="pl-4">-d "action=add" \</div>
       <div class="pl-4">-d "service=101" \</div>
@@ -774,7 +929,7 @@
         Pertanyaan Umum (FAQ)
       </h2>
       <p class="text-xs text-zinc-500">
-        Hal-hal penting seputar keamanan akun, garansi, dan cara kerja Buzzer Media.
+        Hal-hal penting seputar keamanan akun, garansi, dan cara kerja Narasi Media.
       </p>
     </div>
 
@@ -805,20 +960,21 @@
   </section>
 
   <!-- COMPANY PROFILE FOOTER WITH SCBD ADDRESS & DIRECT WHATSAPP CS -->
-  <footer class="border-t border-zinc-200 dark:border-zinc-800 pt-10 text-xs text-zinc-500 space-y-6 max-w-6xl mx-auto">
+  <footer id="kontak-kantor" class="border-t border-zinc-200 dark:border-zinc-800 pt-10 text-xs text-zinc-500 space-y-6 max-w-6xl mx-auto scroll-mt-20">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
       <div class="space-y-2 md:col-span-2">
         <div class="flex items-center space-x-2">
           <div class="w-6 h-6 rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono font-bold text-xs flex items-center justify-center">
-            BM
+            NM
           </div>
-          <span class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">PT Buzzer Media Solusindo</span>
+          <span class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">PT Narasi Media Solusindo</span>
         </div>
         <p class="text-xs text-zinc-500 max-w-sm leading-relaxed">
-          Penyedia infrastruktur optimasi media sosial, penyedia jasa buzzer, dan reseller panel SMM nomor 1 di Indonesia dengan sistem pengerjaan otomatis 24 jam nonstop.
+          Penyedia infrastruktur optimasi media sosial, penyedia jaringan amplifikasi narasi &amp; media digital terintegrasi, dan reseller panel SMM nomor 1 di Indonesia dengan sistem pengerjaan otomatis 24 jam nonstop.
         </p>
-        <div class="text-[11px] text-zinc-400">
-          📍 Jl. Jend. Sudirman Kav. 52-53, SCBD Jakarta Selatan 12190
+        <div class="space-y-1 text-[11px] text-zinc-400">
+          <div>📍 <strong>Kantor Operasional:</strong> Gedung Cyber 2 Tower Lantai 18, Jl. HR Rasuna Said Blok X-5, Setiabudi, Jakarta Selatan 12950</div>
+          <div>🏢 <strong>Perizinan:</strong> SK Kemenkumham AHU-0038921.AH.01.01 &bull; NIB 9120008412891 &bull; PSE Kominfo 008921.01/DJAI.PSE</div>
         </div>
       </div>
 
@@ -850,7 +1006,7 @@
     </div>
 
     <div class="border-t border-zinc-200 dark:border-zinc-800/80 pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-zinc-400 gap-2">
-      <div>© 2026 PT Buzzer Media Solusindo. All rights reserved.</div>
+      <div>© 2026 PT Narasi Media Solusindo. All rights reserved.</div>
       <div class="flex space-x-4">
         <span>Syarat & Ketentuan</span>
         <span>Kebijakan Privasi</span>

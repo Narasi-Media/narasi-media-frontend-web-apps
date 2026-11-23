@@ -146,6 +146,7 @@
       <UserProfile
         {stats}
         userId={stats.username}
+        on:backToDashboard={() => activeTab = 'dashboard'}
         on:openDeposit={() => isDepositModalOpen = true}
         on:updateProfile={(e) => stats.full_name = e.detail.fullName}
         on:balanceUpdated={(e) => stats.balance = e.detail.balance}
@@ -166,9 +167,9 @@
   <footer class="border-t border-zinc-200 dark:border-zinc-800/80 py-5 px-4 text-xs text-zinc-500 dark:text-zinc-400 transition-colors">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center space-x-2">
-        <span class="font-semibold text-zinc-800 dark:text-zinc-200">buzzer.media</span>
+        <span class="font-semibold text-zinc-800 dark:text-zinc-200">narasi.media</span>
         <span>&middot;</span>
-        <span>Solusi Pemasaran Sosial Media & Jaringan Buzzer Terpercaya Indonesia</span>
+        <span>Solusi Pemasaran Sosial Media &amp; Jaringan Narasi Media Terpercaya Indonesia</span>
       </div>
       <div class="flex items-center space-x-3 text-zinc-400 text-[11px]">
         <span>Layanan Otomatis 24 Jam &bull; Garansi Refill &bull; Keamanan Terjamin</span>

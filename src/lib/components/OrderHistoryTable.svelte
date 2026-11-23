@@ -20,7 +20,7 @@
       id: 'ORD-984119',
       created_at: '2026-11-22 07:12:05',
       service_name: 'TikTok Followers Organik HQ [Garansi 30 Hari]',
-      target: 'https://tiktok.com/@buzzer_viral',
+      target: 'https://tiktok.com/@narasi_viral',
       quantity: 500,
       start_count: 320,
       remains: 120,

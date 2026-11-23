@@ -24,9 +24,9 @@
     id: 'USR-8821',
     username: 'regiami',
     full_name: 'Regi Pratama Ami',
-    email: 'regi@buzzer.media',
+    email: 'regi@narasi.media',
     whatsapp_number: '081234567890',
-    telegram_username: '@regiami_buzzer',
+    telegram_username: '@regiami_narasi',
     role: 'Member',
     tier: 'VIP Gold Partner',
     balance: 500000,
@@ -213,6 +213,27 @@
     </div>
   {/if}
 
+  <!-- Context Navigation Breadcrumb -->
+  <div class="flex items-center justify-between pb-1">
+    <div class="flex items-center space-x-2 text-xs text-zinc-500 dark:text-zinc-400">
+      <button
+        type="button"
+        on:click={() => dispatch('backToDashboard')}
+        class="hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center space-x-1 font-semibold transition-colors"
+      >
+        <span>&larr;</span>
+        <span>Kembali ke Dashboard</span>
+      </button>
+      <span>/</span>
+      <span class="text-zinc-900 dark:text-zinc-100 font-bold">Profil Akun Pengguna</span>
+    </div>
+
+    <div class="text-[11px] text-zinc-400 font-mono hidden sm:flex items-center space-x-1.5">
+      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+      <span>Akun Member Terverifikasi</span>
+    </div>
+  </div>
+
   <!-- Header Identity Card (Linear / Vercel aesthetic) -->
   <div class="ui-card rounded-2xl p-6 lg:p-8 space-y-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-zinc-200 dark:border-zinc-800">
@@ -220,7 +241,7 @@
       <div class="flex items-start sm:items-center space-x-4 sm:space-x-5">
         <div class="relative">
           <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-950 dark:from-zinc-100 dark:to-zinc-300 text-white dark:text-zinc-950 font-mono font-bold text-xl sm:text-2xl flex items-center justify-center shadow-md uppercase tracking-tight">
-            {profile.username ? profile.username.slice(0, 2) : 'BM'}
+            {profile.username ? profile.username.slice(0, 2) : 'NM'}
           </div>
           <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white dark:border-[#121215] flex items-center justify-center text-[10px] text-white" title="Akun Aktif & Terverifikasi">
             ✓
@@ -456,7 +477,7 @@
                 id="prof-telegram"
                 type="text"
                 bind:value={formTelegram}
-                placeholder="cth. @regiami_buzzer"
+                placeholder="cth. @regiami_narasi"
                 class="w-full px-3 py-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 text-xs font-mono focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:outline-none"
               />
             </div>
@@ -496,7 +517,7 @@
             Koneksi API Reseller & Integrasi Sistem
           </h2>
           <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-            Gunakan Kunci Akses API ini untuk menghubungkan website reseller Anda langsung ke jaringan Buzzer Media secara otomatis 24 jam.
+            Gunakan Kunci Akses API ini untuk menghubungkan website reseller Anda langsung ke jaringan Narasi Media secara otomatis 24 jam.
           </p>
         </div>
 
@@ -551,7 +572,7 @@
               Contoh Request Pemesanan Otomatis (cURL)
             </span>
             <div class="p-3.5 rounded-xl bg-zinc-950 text-zinc-300 font-mono text-[11px] overflow-x-auto leading-relaxed border border-zinc-800">
-              <div>curl -X POST https://api.buzzer.media/api/v2 \</div>
+              <div>curl -X POST https://api.narasi.media/api/v2 \</div>
               <div class="pl-4">-H "Content-Type: application/json" \</div>
               <div class="pl-4">-d '&#123;</div>
               <div class="pl-8">"key": "{showApiKey ? profile.api_key : 'bm_live_••••••••••••'}",</div>

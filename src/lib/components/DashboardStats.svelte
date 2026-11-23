@@ -25,7 +25,7 @@
       </div>
       <div>
         <div class="flex items-center space-x-2">
-          <span class="text-xs font-semibold text-zinc-900 dark:text-zinc-100">Status Server Buzzer & Jaringan Indonesia</span>
+          <span class="text-xs font-semibold text-zinc-900 dark:text-zinc-100">Status Server &amp; Jaringan Narasi Media Indonesia</span>
           <span class="text-[10px] text-zinc-400 font-mono">22 Nov 2026</span>
         </div>
         <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
@@ -141,7 +141,7 @@
     >
       <div>
         <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Alur Cepat</div>
-        <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-0.5">Pesan Layanan Buzzer & SMM</div>
+        <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mt-0.5">Pesan Layanan Narasi Media &amp; SMM</div>
         <div class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Instagram, TikTok, YouTube & X</div>
       </div>
       <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-zinc-100 dark:group-hover:text-zinc-900 transition-colors">
