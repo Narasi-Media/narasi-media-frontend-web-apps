@@ -38,24 +38,55 @@
   $: calculatedPrice = Math.ceil((quantity / 1000) * pricePerK);
   $: isInsufficient = calculatedPrice > userBalance;
 
+  let errorTimer;
+  function setError(msg) {
+    if (errorTimer) clearTimeout(errorTimer);
+    errorMessage = msg;
+    errorTimer = setTimeout(() => {
+      errorMessage = '';
+    }, 6000);
+  }
+
+  let orderResultTimer;
+  let orderCountdown = 8;
+  function setOrderSuccess(data) {
+    orderResult = data;
+    orderCountdown = 8;
+    if (orderResultTimer) clearInterval(orderResultTimer);
+    orderResultTimer = setInterval(() => {
+      orderCountdown -= 1;
+      if (orderCountdown <= 0) {
+        clearInterval(orderResultTimer);
+        orderResult = null;
+        target = '';
+      }
+    }, 1000);
+  }
+
   async function handleSubmit() {
     errorMessage = '';
+    if (errorTimer) clearTimeout(errorTimer);
     orderResult = null;
 
+    if (!selectedServiceId) {
+      setError('Silakan pilih salah satu layanan.');
+      return;
+    }
+
     if (!target.trim()) {
-      errorMessage = 'Target link atau username tidak boleh kosong.';
+      setError('Target link atau username tidak boleh kosong.');
       return;
     }
 
     if (currentService) {
       if (quantity < currentService.min_order || quantity > currentService.max_order) {
-        errorMessage = `Jumlah pesanan harus antara ${currentService.min_order} dan ${currentService.max_order}.`;
+        setError(`Jumlah pesanan harus antara ${currentService.min_order} dan ${currentService.max_order}.`);
         return;
       }
     }
 
     if (isInsufficient) {
-      errorMessage = 'Saldo tidak mencukupi untuk membuat pesanan ini.';
+      setError('Saldo tidak mencukupi untuk membuat pesanan ini.');
       return;
     }
 
@@ -70,13 +101,13 @@
       });
 
       if (res.success) {
-        orderResult = res.data;
+        setOrderSuccess(res.data);
         dispatch('orderCreated', { order: res.data, amountDeducted: calculatedPrice });
       } else {
-        errorMessage = res.message || 'Gagal memproses pesanan.';
+        setError(res.message || 'Gagal memproses pesanan.');
       }
     } catch (err) {
-      errorMessage = err.message || 'Terjadi kesalahan sistem.';
+      setError(err.message || 'Terjadi kesalahan sistem.');
     } finally {
       isSubmitting = false;
     }
@@ -96,36 +127,58 @@
 
   {#if orderResult}
     <!-- Success Feedback Alert (shadcn style) -->
-    <div class="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs space-y-2">
-      <div class="flex items-center space-x-2 font-semibold">
-        <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <span>Pesanan Berhasil Diterima</span>
+    <div class="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs space-y-2 relative">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2 font-semibold">
+          <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Pesanan Berhasil Diterima</span>
+        </div>
+        <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
+          Tertutup otomatis dalam {orderCountdown}d
+        </span>
       </div>
       <p class="text-[11px] text-zinc-600 dark:text-zinc-400 font-mono">
         ID: <strong class="text-zinc-900 dark:text-zinc-100">#{orderResult.id}</strong> • Biaya: <strong>{formatRupiah(calculatedPrice)}</strong>
       </p>
-      <div class="pt-1">
+      <div class="pt-1 flex items-center space-x-2">
         <button
           type="button"
-          class="h-7 px-3 rounded text-xs font-medium bg-emerald-600 hover:bg-emerald-500 text-white transition-all"
-          on:click={() => { orderResult = null; target = ''; }}
+          class="h-7 px-3 rounded text-xs font-medium bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-sm"
+          on:click={() => { if (orderResultTimer) clearInterval(orderResultTimer); orderResult = null; target = ''; }}
         >
           + Pesanan Baru
+        </button>
+        <button
+          type="button"
+          class="h-7 px-2.5 rounded text-xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+          on:click={() => { if (orderResultTimer) clearInterval(orderResultTimer); orderResult = null; }}
+        >
+          Tutup
         </button>
       </div>
     </div>
   {/if}
 
   {#if errorMessage}
-    <div class="p-3.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-300 text-xs flex items-center space-x-2">
-      <svg class="w-4 h-4 text-rose-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-      </svg>
-      <span>{errorMessage}</span>
+    <div class="p-3.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-300 text-xs flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <svg class="w-4 h-4 text-rose-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{errorMessage}</span>
+      </div>
+      <button
+        type="button"
+        on:click={() => { if (errorTimer) clearTimeout(errorTimer); errorMessage = ''; }}
+        class="text-rose-500 hover:text-rose-700 text-xs font-bold px-1"
+        title="Tutup pesan error"
+      >
+        ✕
+      </button>
     </div>
   {/if}
 

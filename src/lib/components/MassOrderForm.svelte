@@ -10,12 +10,22 @@
 
   $: linesCount = rawOrders.split('\n').filter(l => l.trim().length > 0).length;
 
+  let errorTimer;
+  function setError(msg) {
+    if (errorTimer) clearTimeout(errorTimer);
+    errorMessage = msg;
+    errorTimer = setTimeout(() => {
+      errorMessage = '';
+    }, 6000);
+  }
+
   async function handleBatchSubmit() {
     errorMessage = '';
+    if (errorTimer) clearTimeout(errorTimer);
     batchResult = null;
 
     if (linesCount === 0) {
-      errorMessage = 'Silakan masukkan minimal satu baris pesanan.';
+      setError('Silakan masukkan minimal satu baris pesanan.');
       return;
     }
 
@@ -25,10 +35,10 @@
       if (res.success) {
         batchResult = res.data;
       } else {
-        errorMessage = res.message || 'Gagal memproses pesanan masal.';
+        setError(res.message || 'Gagal memproses pesanan masal.');
       }
     } catch (err) {
-      errorMessage = err.message || 'Terjadi kesalahan sistem.';
+      setError(err.message || 'Terjadi kesalahan sistem.');
     } finally {
       isSubmitting = false;
     }
@@ -82,8 +92,16 @@
   {/if}
 
   {#if errorMessage}
-    <div class="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs">
-      {errorMessage}
+    <div class="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs flex items-center justify-between">
+      <span>{errorMessage}</span>
+      <button
+        type="button"
+        on:click={() => { if (errorTimer) clearTimeout(errorTimer); errorMessage = ''; }}
+        class="text-rose-500 hover:text-rose-700 text-xs font-bold px-1"
+        title="Tutup pesan error"
+      >
+        ✕
+      </button>
     </div>
   {/if}
 

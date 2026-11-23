@@ -88,12 +88,14 @@
     }
   });
 
-  function showToast(msg, type = 'success') {
+  let toastTimeout;
+  function showToast(msg, type = 'success', duration = 4000) {
+    if (toastTimeout) clearTimeout(toastTimeout);
     toastMessage = msg;
     toastType = type;
-    setTimeout(() => {
+    toastTimeout = setTimeout(() => {
       toastMessage = '';
-    }, 3500);
+    }, duration);
   }
 
   async function handleSaveContact() {
@@ -107,7 +109,10 @@
         webhook_url: formWebhook,
         two_factor_enabled: profile.two_factor_enabled
       };
-      await updateUserProfile(profile.username, payload);
+      const res = await updateUserProfile(profile.username, payload);
+      if (!res.success) {
+        throw new Error(res.message || 'Gagal menyimpan profil');
+      }
       profile.full_name = formName;
       profile.email = formEmail;
       profile.whatsapp_number = formWhatsapp;
@@ -138,13 +143,16 @@
     isRegeneratingKey = true;
     try {
       const res = await regenerateApiKey(profile.username);
+      if (!res.success) {
+        throw new Error(res.message || 'Gagal regenerasi kunci API');
+      }
       if (res.data) {
         profile.api_key = res.data;
       }
       showRegenerateModal = false;
       showToast('Kunci API baru berhasil dibuat! Segera perbarui konfigurasi website Anda.');
     } catch (e) {
-      showToast('Gagal regenerasi API key', 'error');
+      showToast('Gagal regenerasi API key: ' + e.message, 'error');
     } finally {
       isRegeneratingKey = false;
     }
@@ -186,7 +194,10 @@
   async function handleSetBalance(amount) {
     isUpdatingBalance = true;
     try {
-      await adjustUserBalance(profile.username, amount);
+      const res = await adjustUserBalance(profile.username, amount);
+      if (!res.success) {
+        throw new Error(res.message || 'Gagal mengubah saldo');
+      }
       profile.balance = amount;
       profile.balance_formatted = formatRupiah(amount);
       if (stats) stats.balance = amount;
@@ -202,13 +213,21 @@
 </script>
 
 <div class="space-y-6">
-  <!-- Toast Notification Feedback -->
+  <!-- Toast Notification Feedback (with auto-dismiss & close button) -->
   {#if toastMessage}
     <div
       class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl shadow-2xl text-xs font-medium flex items-center space-x-2.5 transition-all {toastType === 'success' ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border border-zinc-700/50' : 'bg-rose-600 text-white'}"
     >
       <span>{toastType === 'success' ? '✓' : '⚠'}</span>
       <span>{toastMessage}</span>
+      <button
+        type="button"
+        on:click={() => { if (toastTimeout) clearTimeout(toastTimeout); toastMessage = ''; }}
+        class="ml-2 pl-1.5 opacity-70 hover:opacity-100 text-xs font-bold"
+        title="Tutup notifikasi"
+      >
+        ✕
+      </button>
     </div>
   {/if}
 

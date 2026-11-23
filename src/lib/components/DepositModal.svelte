@@ -16,10 +16,33 @@
 
   const quickAmounts = [20000, 50000, 100000, 250000, 500000];
 
+  let errorTimer;
+  function setError(msg) {
+    if (errorTimer) clearTimeout(errorTimer);
+    errorMessage = msg;
+    errorTimer = setTimeout(() => {
+      errorMessage = '';
+    }, 5000);
+  }
+
+  let countdown = 5;
+  let countdownInterval;
+  function startAutoClose() {
+    countdown = 5;
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+      countdown -= 1;
+      if (countdown <= 0) {
+        clearInterval(countdownInterval);
+        closeModal();
+      }
+    }, 1000);
+  }
+
   async function handleCreateDeposit() {
     errorMessage = '';
     if (amount < 10000) {
-      errorMessage = 'Minimal deposit adalah Rp 10.000';
+      setError('Minimal deposit adalah Rp 10.000');
       return;
     }
 
@@ -35,10 +58,10 @@
         depositData = res.data;
         step = 2;
       } else {
-        errorMessage = res.message || 'Gagal membuat invoice deposit.';
+        setError(res.message || 'Gagal membuat invoice deposit.');
       }
     } catch (err) {
-      errorMessage = err.message || 'Terjadi kesalahan sistem.';
+      setError(err.message || 'Terjadi kesalahan sistem.');
     } finally {
       isSubmitting = false;
     }
@@ -47,6 +70,19 @@
   function handleFileChange(event) {
     const file = event.target.files[0];
     if (file) {
+      // Security Validation: File Type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+      if (!allowedTypes.includes(file.type)) {
+        setError('Format file tidak didukung. Harap unggah gambar JPG, PNG, atau WEBP.');
+        event.target.value = '';
+        return;
+      }
+      // Security Validation: File Size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Ukuran file terlalu besar (maksimal 5 MB).');
+        event.target.value = '';
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (e) => {
         proofImagePreview = e.target.result;
@@ -58,11 +94,11 @@
   async function handleSubmitProof() {
     errorMessage = '';
     if (!senderName.trim()) {
-      errorMessage = 'Masukkan nama akun pengirim (contoh: Budi Santoso / Akun Dana)';
+      setError('Masukkan nama akun pengirim (contoh: Budi Santoso / Akun Dana)');
       return;
     }
     if (!proofImagePreview) {
-      errorMessage = 'Silakan pilih file foto / screenshot bukti transfer QRIS.';
+      setError('Silakan pilih file foto / screenshot bukti transfer QRIS.');
       return;
     }
 
@@ -71,18 +107,21 @@
       const res = await submitDepositProof(depositData.id, senderName, proofImagePreview);
       if (res.success) {
         step = 3;
+        startAutoClose();
         dispatch('depositSubmitted', depositData);
       } else {
-        errorMessage = res.message || 'Gagal mengunggah bukti.';
+        setError(res.message || 'Gagal mengunggah bukti.');
       }
     } catch (err) {
-      errorMessage = err.message || 'Terjadi kesalahan sistem.';
+      setError(err.message || 'Terjadi kesalahan sistem.');
     } finally {
       isSubmitting = false;
     }
   }
 
   function closeModal() {
+    if (countdownInterval) clearInterval(countdownInterval);
+    if (errorTimer) clearTimeout(errorTimer);
     dispatch('close');
   }
 </script>
@@ -272,14 +311,20 @@
           <p class="text-xs text-zinc-500 mt-1 max-w-xs mx-auto leading-relaxed">
             Invoice Anda dalam antrean verifikasi staf admin. Saldo sebesar <strong>{formatRupiah(Math.floor(amount * 1.05))}</strong> akan langsung aktif setelah disetujui.
           </p>
+          <div class="mt-2.5 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[11px] text-zinc-500 font-mono">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Jendela otomatis tertutup dalam <strong>{countdown} detik</strong></span>
+          </div>
         </div>
-        <button
-          type="button"
-          class="h-9 px-4 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 transition-all shadow-sm"
-          on:click={closeModal}
-        >
-          Selesai & Tutup
-        </button>
+        <div>
+          <button
+            type="button"
+            class="h-9 px-4 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 transition-all shadow-sm"
+            on:click={closeModal}
+          >
+            Selesai & Tutup Sekarang
+          </button>
+        </div>
       </div>
     {/if}
   </div>

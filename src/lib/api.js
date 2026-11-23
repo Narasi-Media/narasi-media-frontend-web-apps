@@ -102,12 +102,18 @@ export async function placeOrder(orderData) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderData)
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal memproses pesanan`
+      };
+    }
+    return json;
   } catch (err) {
     return {
-      success: true,
-      message: 'Pesanan simulasi berhasil dikirim!',
-      data: { id: `ORD-${Date.now().toString().slice(-6)}`, status: 'processing', ...orderData }
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
     };
   }
 }
@@ -119,18 +125,18 @@ export async function massOrder(userId, ordersRaw) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, orders_raw: ordersRaw })
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal memproses pesanan masal`
+      };
+    }
+    return json;
   } catch (err) {
-    const lines = ordersRaw.trim().split('\n').filter(l => l.trim().length > 0);
     return {
-      success: true,
-      message: 'Proses pesanan masal simulasi selesai',
-      data: {
-        total_lines: lines.length,
-        successful_orders: lines.length,
-        failed_orders: 0,
-        items: lines.map((l, i) => ({ line: i + 1, raw: l, success: true, error: null }))
-      }
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
     };
   }
 }
@@ -142,20 +148,18 @@ export async function requestDeposit(payload) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal membuat invoice deposit`
+      };
+    }
+    return json;
   } catch (err) {
-    const unique = Math.floor(100 + Math.random() * 900);
     return {
-      success: true,
-      message: 'Tiket deposit berhasil dibuat',
-      data: {
-        id: `DEP-${Date.now().toString().slice(-6)}`,
-        requested_amount: { amount: payload.amount },
-        unique_code: unique,
-        total_to_pay: { amount: payload.amount + unique },
-        balance_credited: { amount: payload.amount },
-        status: 'pending'
-      }
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
     };
   }
 }
@@ -167,12 +171,18 @@ export async function submitDepositProof(depositId, senderName, proofImageUrl) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sender_name: senderName, proof_image_url: proofImageUrl })
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal mengunggah bukti pembayaran`
+      };
+    }
+    return json;
   } catch (err) {
     return {
-      success: true,
-      message: 'Bukti pembayaran berhasil diunggah! Menunggu verifikasi admin.',
-      data: { id: depositId, sender_name: senderName, status: 'waiting_verification' }
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
     };
   }
 }
@@ -220,12 +230,18 @@ export async function adjustUserBalance(username, amount) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount: Number(amount) })
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal menyesuaikan saldo`
+      };
+    }
+    return json;
   } catch (err) {
     return {
-      success: true,
-      message: 'Saldo berhasil disesuaikan',
-      data: { balance: amount, balance_formatted: formatRupiah(amount) }
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
     };
   }
 }
@@ -237,9 +253,19 @@ export async function updateUserProfile(username, data) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal memperbarui profil`
+      };
+    }
+    return json;
   } catch (err) {
-    return { success: true, message: 'Profil berhasil diperbarui' };
+    return {
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
+    };
   }
 }
 
@@ -248,10 +274,19 @@ export async function regenerateApiKey(username) {
     const res = await fetch(`${API_BASE}/user/profile/${username}/api-key`, {
       method: 'POST'
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal memperbarui API Key`
+      };
+    }
+    return json;
   } catch (err) {
-    const fakeKey = `bm_live_${Math.random().toString(36).substring(2)}${Math.random().toString(36).substring(2)}`;
-    return { success: true, message: 'API Key baru berhasil dibuat', data: fakeKey };
+    return {
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
+    };
   }
 }
 
@@ -262,8 +297,18 @@ export async function updateUserPassword(username, currentPassword, newPassword)
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
     });
-    return await res.json();
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        success: false,
+        message: json.message || json.error || `HTTP ${res.status}: Gagal mengubah kata sandi`
+      };
+    }
+    return json;
   } catch (err) {
-    return { success: true, message: 'Kata sandi berhasil diubah' };
+    return {
+      success: false,
+      message: `Koneksi gagal: ${err.message || 'Tidak dapat terhubung ke server backend'}`
+    };
   }
 }
