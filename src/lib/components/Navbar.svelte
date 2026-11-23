@@ -273,7 +273,7 @@
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 {/if}
               </div>
-              <div class="text-[9px] text-zinc-400 font-mono">Profil Saya &bull; VIP</div>
+              <div class="text-[9px] text-zinc-400 font-mono">Profil Saya</div>
             </div>
           </button>
         </div>

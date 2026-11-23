@@ -17,7 +17,7 @@
   let simUsername = 'brandkreatif.id';
   let simCaption = 'Peluncuran koleksi eksklusif kita hari ini! Diskon 50% khusus 100 pembeli pertama 🔥';
   let simImageCategory = 'fashion'; // 'fashion', 'gadget', 'food', 'creator'
-  let simBoostPackage = 'viral'; // 'starter', 'viral', 'vip'
+  let simBoostPackage = 'viral'; // 'starter', 'viral', 'pro'
 
   // Live Counter Animation State
   let isSimulating = false;
@@ -117,7 +117,7 @@
       targetL = 1250;
       targetV = 8500;
       targetF = 2100;
-    } else if (simBoostPackage === 'vip') {
+    } else if (simBoostPackage === 'pro') {
       targetL = 25000;
       targetV = 180000;
       targetF = 35000;
@@ -515,7 +515,7 @@
             {#each [
               { id: 'starter', title: 'Starter Boost', spec: '+1.200 Likes • +2.000 Followers', price: 'Rp 9.500' },
               { id: 'viral', title: 'Viral FYP Explorer', spec: '+12.400 Likes • +15.800 Followers • +85.000 Views', price: 'Rp 22.500', popular: true },
-              { id: 'vip', title: 'Sultan Influencer VIP', spec: '+25.000 Likes • +35.000 Followers • Garansi 365 Hari', price: 'Rp 145.000' }
+              { id: 'pro', title: 'Scale Influencer Pro', spec: '+25.000 Likes • +35.000 Followers • Garansi 365 Hari', price: 'Rp 145.000' }
             ] as pkg}
               <button
                 type="button"

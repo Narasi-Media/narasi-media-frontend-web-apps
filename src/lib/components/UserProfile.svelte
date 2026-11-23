@@ -28,7 +28,6 @@
     whatsapp_number: '081234567890',
     telegram_username: '@regiami_narasi',
     role: 'Member',
-    tier: 'VIP Gold Partner',
     balance: 500000,
     balance_formatted: 'Rp 500.000',
     total_orders: 14,
@@ -253,8 +252,8 @@
             <h1 class="text-lg sm:text-xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
               {profile.full_name || profile.username}
             </h1>
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20">
-              {profile.tier || 'VIP Gold Partner'}
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+              {profile.role || 'Member'}
             </span>
           </div>
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-500 dark:text-zinc-400">
@@ -331,33 +330,12 @@
       </div>
 
       <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80">
-        <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Level Kemitraan</div>
-        <div class="text-xl font-bold tracking-tight text-blue-600 dark:text-blue-400 mt-1">
-          VIP Gold
+        <div class="text-[10px] font-mono uppercase font-semibold text-zinc-400">Total Deposit</div>
+        <div class="text-xl font-bold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-100 mt-1">
+          {formatRupiah(profile.total_deposit || stats.total_deposit || 0)}
         </div>
-        <div class="text-[10px] text-zinc-400 mt-1">Diskon 5% katalog aktif</div>
+        <div class="text-[10px] text-zinc-400 mt-1">Akumulasi deposit berhasil</div>
       </div>
-    </div>
-
-    <!-- VIP Tier Progress Bar -->
-    <div class="p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 space-y-2">
-      <div class="flex items-center justify-between text-xs">
-        <span class="font-medium text-zinc-700 dark:text-zinc-300">
-          Progres Menuju <strong class="text-blue-600 dark:text-blue-400">VIP Platinum Partner</strong>
-        </span>
-        <span class="tabular-nums font-semibold text-zinc-600 dark:text-zinc-400">
-          {formatRupiah(profile.total_spent || 1250000)} / Rp 2.500.000
-        </span>
-      </div>
-      <div class="w-full h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
-        <div
-          class="h-full bg-blue-500 rounded-full transition-all duration-500"
-          style="width: {Math.min(100, ((profile.total_spent || 1250000) / 2500000) * 100)}%"
-        ></div>
-      </div>
-      <p class="text-[11px] text-zinc-500">
-        Nikmati potongan harga spesial hingga 8% serta antrean prioritas super-cepat setelah mencapai target akumulasi transaksi Platinum.
-      </p>
     </div>
   </div>
 

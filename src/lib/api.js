@@ -200,7 +200,6 @@ export async function fetchUserProfile(username = 'regiami') {
       whatsapp_number: '081234567890',
       telegram_username: '@regiami_narasi',
       role: 'Member',
-      tier: 'VIP Gold Partner',
       balance: 500000,
       balance_formatted: 'Rp 500.000',
       total_orders: 14,
