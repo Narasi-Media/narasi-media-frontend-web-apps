@@ -6,6 +6,7 @@
   export let balance = 500000;
   export let username = 'regiami';
   export let isDemo = true;
+  export let isLoggedIn = false;
 
   const dispatch = createEventDispatcher();
 
@@ -124,15 +125,26 @@
             {/if}
           </button>
 
-          <!-- Direct Entry Button to Web App / Dashboard -->
-          <button
-            type="button"
-            on:click={() => selectTab('dashboard')}
-            class="h-8 px-3.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-semibold shadow-sm transition-all flex items-center space-x-1.5 focus:outline-none"
-          >
-            <span>Buka Dashboard Aplikasi</span>
-            <span>&rarr;</span>
-          </button>
+          <!-- Direct Entry Button to Web App / Dashboard or Login -->
+          {#if isLoggedIn}
+            <button
+              type="button"
+              on:click={() => selectTab('dashboard')}
+              class="h-8 px-3.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-semibold shadow-sm transition-all flex items-center space-x-1.5 focus:outline-none"
+            >
+              <span>Buka Dashboard</span>
+              <span>&rarr;</span>
+            </button>
+          {:else}
+            <button
+              type="button"
+              on:click={() => dispatch('openLogin')}
+              class="h-8 px-3.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-semibold shadow-sm transition-all flex items-center space-x-1.5 focus:outline-none"
+            >
+              <span>Masuk Akun</span>
+              <span>&rarr;</span>
+            </button>
+          {/if}
         </div>
       </div>
 
@@ -295,9 +307,19 @@
             type="button"
             on:click={() => dispatch('openLogin')}
             class="px-2 py-1 rounded-md text-[10px] font-mono font-medium bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 transition-colors"
-            title="Masuk atau ganti akun (Bisa login dengan Username saja)"
+            title="Ganti akun pengguna"
           >
             Ganti Akun
+          </button>
+
+          <!-- Logout Button -->
+          <button
+            type="button"
+            on:click={() => dispatch('logout')}
+            class="px-2 py-1 rounded-md text-[10px] font-mono font-medium bg-rose-500/10 hover:bg-rose-500/20 text-rose-700 dark:text-rose-400 border border-rose-500/30 transition-colors"
+            title="Keluar dari sesi akun"
+          >
+            Keluar
           </button>
         </div>
       </div>

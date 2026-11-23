@@ -15,6 +15,7 @@
   let isDepositModalOpen = false;
   let isLoginModalOpen = false;
   let isDemoAccount = true;
+  let isLoggedIn = false;
   let stats = {
     balance: 500000,
     total_orders: 14,
@@ -32,7 +33,23 @@
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
-    await loadUserData('regiami');
+
+    const sessionStr = localStorage.getItem('narasi_client_session');
+    if (sessionStr) {
+      try {
+        const session = JSON.parse(sessionStr);
+        if (session && session.username) {
+          isLoggedIn = true;
+          stats.username = session.username;
+          stats.full_name = session.fullName || session.username;
+          isDemoAccount = session.isDemo;
+          await loadUserData(session.username);
+        }
+      } catch (e) {
+        localStorage.removeItem('narasi_client_session');
+      }
+    }
+
     services = await fetchServices();
   });
 
@@ -42,7 +59,12 @@
   }
 
   function handleTabChange(event) {
-    activeTab = event.detail;
+    const targetTab = event.detail;
+    if (targetTab !== 'company' && !isLoggedIn) {
+      isLoginModalOpen = true;
+      return;
+    }
+    activeTab = targetTab;
   }
 
   function handleOrderCreated(event) {
@@ -57,10 +79,26 @@
   }
 
   function handleLoginSuccess(detail) {
+    isLoggedIn = true;
     stats.username = detail.username;
     stats.full_name = detail.fullName;
     isDemoAccount = detail.isDemo;
+    localStorage.setItem('narasi_client_session', JSON.stringify({
+      username: detail.username,
+      fullName: detail.fullName,
+      isDemo: detail.isDemo,
+      loggedInAt: new Date().toISOString()
+    }));
     loadUserData(detail.username);
+    if (activeTab === 'company') {
+      activeTab = 'dashboard';
+    }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('narasi_client_session');
+    isLoggedIn = false;
+    activeTab = 'company';
   }
 </script>
 
@@ -71,12 +109,14 @@
     balance={stats.balance}
     username={stats.username}
     isDemo={isDemoAccount}
+    {isLoggedIn}
     on:tabChange={handleTabChange}
     on:openDeposit={() => isDepositModalOpen = true}
     on:openLogin={() => isLoginModalOpen = true}
+    on:logout={handleLogout}
   />
 
-  {#if isDemoAccount}
+  {#if isLoggedIn && isDemoAccount}
     <div class="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 text-xs text-amber-800 dark:text-amber-300">
       <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center space-x-2">
@@ -92,7 +132,7 @@
           on:click={() => isLoginModalOpen = true}
           class="text-[11px] underline font-semibold hover:text-amber-950 dark:hover:text-amber-100"
         >
-          Masuk / Ganti Akun &rarr;
+          Ganti Akun &rarr;
         </button>
       </div>
     </div>
@@ -100,7 +140,30 @@
 
   <!-- Main Content Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8">
-    {#if activeTab === 'company'}
+    {#if activeTab !== 'company' && !isLoggedIn}
+      <div class="py-16 text-center max-w-md mx-auto space-y-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 shadow-sm my-8">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 text-amber-600 border border-amber-500/20 flex items-center justify-center text-2xl font-bold">
+          🔒
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">
+            Wajib Masuk Terlebih Dahulu
+          </h3>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+            Untuk mengakses Dashboard, Katalog Layanan, dan membuat Pesanan, silakan login menggunakan akun Anda terlebih dahulu.
+          </p>
+        </div>
+        <div class="pt-2">
+          <button
+            type="button"
+            on:click={() => isLoginModalOpen = true}
+            class="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-semibold shadow-sm transition-all"
+          >
+            Masuk Sekarang &rarr;
+          </button>
+        </div>
+      </div>
+    {:else if activeTab === 'company'}
       <CompanyProfile on:navigateToApp={(e) => activeTab = e.detail.tab} />
     {:else if activeTab === 'dashboard'}
       <DashboardStats
