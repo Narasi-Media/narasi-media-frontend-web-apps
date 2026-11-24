@@ -9,11 +9,14 @@
   import UserProfile from './lib/components/UserProfile.svelte';
   import DepositModal from './lib/components/DepositModal.svelte';
   import LoginModal from './lib/components/LoginModal.svelte';
+  import FeatureGuideModal from './lib/components/FeatureGuideModal.svelte';
   import { fetchDashboard, fetchServices, formatRupiah } from './lib/api.js';
 
   let activeTab = 'company';
   let isDepositModalOpen = false;
   let isLoginModalOpen = false;
+  let isGuideModalOpen = false;
+  let guideInitialMode = 'tour';
   let isDemoAccount = true;
   let isLoggedIn = false;
   let stats = {
@@ -100,6 +103,11 @@
     isLoggedIn = false;
     activeTab = 'company';
   }
+
+  function openGuide(mode = 'tour') {
+    guideInitialMode = mode;
+    isGuideModalOpen = true;
+  }
 </script>
 
 <div class="min-h-screen bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 flex flex-col font-sans transition-colors duration-150">
@@ -113,6 +121,7 @@
     on:tabChange={handleTabChange}
     on:openDeposit={() => isDepositModalOpen = true}
     on:openLogin={() => isLoginModalOpen = true}
+    on:openGuide={(e) => openGuide(e.detail || 'tour')}
     on:logout={handleLogout}
   />
 
@@ -169,6 +178,7 @@
       <DashboardStats
         {stats}
         on:openDeposit={() => isDepositModalOpen = true}
+        on:openGuide={(e) => openGuide(e.detail || 'tour')}
         on:navigate={(e) => activeTab = e.detail}
       />
     {:else if activeTab === 'new-order'}
@@ -274,6 +284,31 @@
     currentUsername={stats.username}
     on:loginSuccess={(e) => handleLoginSuccess(e.detail)}
   />
+
+  <!-- Feature Guide & Onboarding Walkthrough Modal -->
+  <FeatureGuideModal
+    bind:show={isGuideModalOpen}
+    initialMode={guideInitialMode}
+    on:close={() => isGuideModalOpen = false}
+    on:navigateToTab={(e) => {
+      activeTab = e.detail;
+      if (!isLoggedIn && activeTab !== 'company') {
+        isLoginModalOpen = true;
+      }
+    }}
+  />
+
+  <!-- Floating Guide Helper Pill Button -->
+  <button
+    type="button"
+    class="fixed bottom-6 right-6 z-40 px-3.5 py-2.5 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xl border border-zinc-700/80 dark:border-zinc-300 font-semibold text-xs flex items-center space-x-2 hover:scale-105 active:scale-95 transition-all duration-200 group focus:outline-none"
+    title="Buka Pusat Panduan & Tour Fitur Narasi Media"
+    on:click={() => openGuide('tour')}
+  >
+    <span class="text-base group-hover:rotate-12 transition-transform">💡</span>
+    <span class="tracking-tight hidden sm:inline">Panduan Fitur</span>
+    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+  </button>
 
   <!-- Footer -->
   <footer class="border-t border-zinc-200 dark:border-zinc-800/80 py-5 px-4 text-xs text-zinc-500 dark:text-zinc-400 transition-colors">

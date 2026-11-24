@@ -99,6 +99,17 @@
 
         <!-- Right Side: Theme Switcher & Primary Action (Enter Web App) -->
         <div class="flex items-center space-x-2.5">
+          <!-- Guide Center Button -->
+          <button
+            type="button"
+            class="h-8 px-2.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-medium border border-zinc-200 dark:border-zinc-700 transition-all flex items-center space-x-1.5 focus:outline-none"
+            title="Pusat Panduan &amp; Onboarding"
+            on:click={() => dispatch('openGuide', 'tour')}
+          >
+            <span>💡</span>
+            <span class="hidden sm:inline">Panduan</span>
+          </button>
+
           <!-- Theme Switcher -->
           <button
             type="button"
@@ -221,6 +232,15 @@
             on:click={() => selectTab('services')}
           >
             Katalog Layanan
+          </button>
+          <button
+            type="button"
+            class="px-2.5 py-1.5 rounded-md transition-all text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 flex items-center space-x-1 font-semibold"
+            title="Buka Pusat Panduan &amp; Tour Fitur"
+            on:click={() => dispatch('openGuide', 'tour')}
+          >
+            <span>💡</span>
+            <span>Panduan</span>
           </button>
         </nav>
 
@@ -374,6 +394,13 @@
           on:click={() => selectTab('profile')}
         >
           Profil Saya
+        </button>
+        <button
+          type="button"
+          class="px-2.5 py-1 rounded-md whitespace-nowrap transition-all bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-semibold"
+          on:click={() => dispatch('openGuide', 'tour')}
+        >
+          💡 Panduan
         </button>
       </div>
     {/if}

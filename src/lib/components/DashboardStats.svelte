@@ -179,4 +179,41 @@
       </div>
     </button>
   </div>
+
+  <!-- ONBOARDING & FEATURE GUIDE HERO CARD -->
+  <div class="ui-card rounded-xl p-5 border border-blue-500/20 bg-gradient-to-r from-blue-500/5 via-transparent to-purple-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex items-start space-x-3.5">
+      <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center text-xl shrink-0">
+        💡
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Panduan Fitur &amp; Tour Pemula</span>
+          <span class="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-blue-500/15 text-blue-600 dark:text-blue-400">
+            6 Langkah Cepat
+          </span>
+        </div>
+        <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5 leading-relaxed">
+          Belum familiar dengan alur pemesanan, verifikasi deposit QRIS, atau cara klaim garansi refill? Ikuti tour interaktif atau baca panduan lengkap kami.
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-2 shrink-0">
+      <button
+        type="button"
+        on:click={() => dispatch('openGuide', 'tour')}
+        class="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-all flex items-center space-x-1"
+      >
+        <span>🎯 Mulai Tour</span>
+        <span>&rarr;</span>
+      </button>
+      <button
+        type="button"
+        on:click={() => dispatch('openGuide', 'docs')}
+        class="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-all"
+      >
+        <span>📚 Baca Panduan</span>
+      </button>
+    </div>
+  </div>
 </div>
