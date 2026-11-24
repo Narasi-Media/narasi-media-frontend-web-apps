@@ -12,6 +12,10 @@
   let depositData = null;
   let senderName = '';
   let proofImagePreview = null;
+  let selectedFileName = '';
+  let selectedFileSize = '';
+  let isDragging = false;
+  let fileInputRef;
   let isSubmitting = false;
   let errorMessage = '';
 
@@ -69,27 +73,61 @@
     }
   }
 
+  function processFile(file) {
+    if (!file) return;
+    // Security Validation: File Type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      setError('Format file tidak didukung. Harap unggah gambar JPG, PNG, atau WEBP.');
+      return;
+    }
+    // Security Validation: File Size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Ukuran file terlalu besar (maksimal 5 MB).');
+      return;
+    }
+
+    selectedFileName = file.name;
+    selectedFileSize = (file.size / 1024).toFixed(1) + ' KB';
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      proofImagePreview = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   function handleFileChange(event) {
     const file = event.target.files[0];
     if (file) {
-      // Security Validation: File Type
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
-      if (!allowedTypes.includes(file.type)) {
-        setError('Format file tidak didukung. Harap unggah gambar JPG, PNG, atau WEBP.');
-        event.target.value = '';
-        return;
-      }
-      // Security Validation: File Size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Ukuran file terlalu besar (maksimal 5 MB).');
-        event.target.value = '';
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        proofImagePreview = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      processFile(file);
+    }
+  }
+
+  function handleDrop(event) {
+    event.preventDefault();
+    isDragging = false;
+    if (event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+      processFile(event.dataTransfer.files[0]);
+    }
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+    isDragging = true;
+  }
+
+  function handleDragLeave(event) {
+    event.preventDefault();
+    isDragging = false;
+  }
+
+  function clearSelectedFile() {
+    proofImagePreview = null;
+    selectedFileName = '';
+    selectedFileSize = '';
+    if (fileInputRef) {
+      fileInputRef.value = '';
     }
   }
 
@@ -274,22 +312,85 @@
           </div>
 
           <div>
-            <label for="proof-file-input" class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Foto Bukti Struk</label>
+            <span class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">Foto Bukti Struk Transfer</span>
+            
             <input
               id="proof-file-input"
               type="file"
               accept="image/*"
+              bind:this={fileInputRef}
               on:change={handleFileChange}
-              class="w-full text-xs text-zinc-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-medium file:bg-zinc-100 file:text-zinc-800 dark:file:bg-zinc-800 dark:file:text-zinc-200 hover:file:bg-zinc-200 cursor-pointer"
+              class="hidden"
             />
-          </div>
 
-          {#if proofImagePreview}
-            <div class="p-2 ui-inset rounded-lg flex items-center space-x-2 text-xs">
-              <img src={proofImagePreview} alt="Preview Bukti" class="w-10 h-10 object-cover rounded border border-zinc-300 dark:border-zinc-700" />
-              <span class="text-zinc-600 dark:text-zinc-300 font-medium">Foto siap dikirim</span>
-            </div>
-          {/if}
+            {#if !proofImagePreview}
+              <!-- Modern Drag & Drop Zone -->
+              <div
+                class="border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-200 {isDragging ? 'border-zinc-900 bg-zinc-100/70 dark:border-zinc-100 dark:bg-zinc-800/70 scale-[0.99]' : 'border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 bg-zinc-50/50 dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-900/70'}"
+                on:click={() => fileInputRef && fileInputRef.click()}
+                on:dragover={handleDragOver}
+                on:dragleave={handleDragLeave}
+                on:drop={handleDrop}
+                role="button"
+                tabindex="0"
+                on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && fileInputRef && fileInputRef.click()}
+              >
+                <div class="w-10 h-10 rounded-full bg-zinc-200/80 dark:bg-zinc-800 flex items-center justify-center mx-auto mb-2 text-zinc-600 dark:text-zinc-300">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                </div>
+                <div class="text-xs font-medium text-zinc-800 dark:text-zinc-200">
+                  <span class="text-blue-600 dark:text-blue-400 font-semibold underline underline-offset-2">Pilih File Foto</span> atau tarik ke sini
+                </div>
+                <p class="text-[10px] text-zinc-400 dark:text-zinc-500 mt-1">
+                  Format JPG, PNG, atau WEBP (Maksimal 5MB)
+                </p>
+              </div>
+            {:else}
+              <!-- Modern Uploaded File Card Preview -->
+              <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/60 p-3 flex items-center justify-between space-x-3 transition-all animate-in fade-in">
+                <div class="flex items-center space-x-3 overflow-hidden">
+                  <img
+                    src={proofImagePreview}
+                    alt="Preview Bukti"
+                    class="w-12 h-12 rounded-lg object-cover border border-zinc-200 dark:border-zinc-700 shadow-sm shrink-0"
+                  />
+                  <div class="min-w-0">
+                    <div class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                      {selectedFileName || 'Foto Bukti Struk'}
+                    </div>
+                    <div class="flex items-center space-x-2 mt-0.5">
+                      <span class="text-[10px] text-zinc-400 font-mono">{selectedFileSize || 'Gambar terverifikasi'}</span>
+                      <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-semibold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                        ✓ Siap Dikirim
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-1.5 shrink-0">
+                  <button
+                    type="button"
+                    class="px-2 py-1 text-[11px] font-medium text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-xs hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-all"
+                    on:click={() => fileInputRef && fileInputRef.click()}
+                  >
+                    Ganti
+                  </button>
+                  <button
+                    type="button"
+                    class="p-1 text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors rounded-lg"
+                    title="Hapus foto"
+                    on:click={clearSelectedFile}
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            {/if}
+          </div>
 
           <button
             type="button"

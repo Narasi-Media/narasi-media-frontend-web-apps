@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage & Company Profile (Main Entity) -->
+  <url>
+    <loc>https://narasi-media-web.narasi-media.workers.dev/</loc>
+    <lastmod>2026-11-24T00:00:00+07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="id-ID" href="https://narasi-media-web.narasi-media.workers.dev/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://narasi-media-web.narasi-media.workers.dev/" />
+    <image:image>
+      <image:loc>https://narasi-media-web.narasi-media.workers.dev/narasi_media_hero_banner.jpg</image:loc>
+      <image:title>Narasi Media Platform Social Media Marketing Indonesia</image:title>
+      <image:caption>Layanan SMM Panel dan Jasa Buzzer Digital Terdepan Indonesia</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Service Catalog & Pricing Section -->
+  <url>
+    <loc>https://narasi-media-web.narasi-media.workers.dev/#katalog-harga</loc>
+    <lastmod>2026-11-24T00:00:00+07:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Interactive Growth Simulator & ROI Calculator -->
+  <url>
+    <loc>https://narasi-media-web.narasi-media.workers.dev/#simulator</loc>
+    <lastmod>2026-11-24T00:00:00+07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Regional & Geographic Coverage Section (GEO Indonesia) -->
+  <url>
+    <loc>https://narasi-media-web.narasi-media.workers.dev/#jangkauan-wilayah</loc>
+    <lastmod>2026-11-24T00:00:00+07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- FAQ & Knowledge Base (Generative Engine Optimization) -->
+  <url>
+    <loc>https://narasi-media-web.narasi-media.workers.dev/#faq</loc>
+    <lastmod>2026-11-24T00:00:00+07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

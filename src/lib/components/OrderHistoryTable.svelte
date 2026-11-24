@@ -51,12 +51,76 @@
       total_price: { amount: 9500 },
       status: 'partial',
       refill_supported: true
+    },
+    {
+      id: 'ORD-984075',
+      created_at: '2026-11-20 18:22:11',
+      service_name: 'Twitter / X Retweet & Likes Viral Pack',
+      target: 'https://x.com/narasi/status/1234567',
+      quantity: 500,
+      start_count: 120,
+      remains: 0,
+      total_price: { amount: 18000 },
+      status: 'success',
+      refill_supported: true
+    },
+    {
+      id: 'ORD-984061',
+      created_at: '2026-11-20 11:05:30',
+      service_name: 'TikTok Video Shares Real Indo',
+      target: 'https://tiktok.com/@bisnis_kuliner',
+      quantity: 1000,
+      start_count: 45,
+      remains: 0,
+      total_price: { amount: 7500 },
+      status: 'success',
+      refill_supported: false
+    },
+    {
+      id: 'ORD-984050',
+      created_at: '2026-11-19 22:40:19',
+      service_name: 'Instagram Story Views High Quality',
+      target: 'https://instagram.com/regi_digital',
+      quantity: 2500,
+      start_count: 10,
+      remains: 0,
+      total_price: { amount: 5000 },
+      status: 'success',
+      refill_supported: false
+    },
+    {
+      id: 'ORD-984033',
+      created_at: '2026-11-19 16:15:02',
+      service_name: 'Shopee Live Stream Spectators 30 Menit',
+      target: 'https://live.shopee.co.id/share?from=live',
+      quantity: 200,
+      start_count: 5,
+      remains: 0,
+      total_price: { amount: 22000 },
+      status: 'success',
+      refill_supported: true
+    },
+    {
+      id: 'ORD-984012',
+      created_at: '2026-11-18 09:12:45',
+      service_name: 'YouTube Watch Hours Monetisasi HQ',
+      target: 'https://youtube.com/watch?v=sample123',
+      quantity: 500,
+      start_count: 1200,
+      remains: 0,
+      total_price: { amount: 45000 },
+      status: 'success',
+      refill_supported: true
     }
   ];
 
   let activeFilter = 'all';
   let searchQuery = '';
   let refillSuccessId = null;
+
+  // Pagination State
+  let currentPage = 1;
+  let pageSize = 5;
 
   $: filteredOrders = orders.filter(o => {
     const matchesFilter = activeFilter === 'all' || o.status === activeFilter;
@@ -65,6 +129,29 @@
                           o.service_name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+
+  $: totalPages = Math.max(1, Math.ceil(filteredOrders.length / pageSize));
+  $: if (currentPage > totalPages) currentPage = totalPages;
+  $: if (activeFilter || searchQuery) {
+    // Reset to page 1 on filter or search
+  }
+
+  function handleFilterChange(filter) {
+    activeFilter = filter;
+    currentPage = 1;
+  }
+
+  function handleSearchChange() {
+    currentPage = 1;
+  }
+
+  $: paginatedOrders = filteredOrders.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  function goToPage(p) {
+    if (p >= 1 && p <= totalPages) {
+      currentPage = p;
+    }
+  }
 
   function handleRefill(orderId) {
     refillSuccessId = orderId;
@@ -157,58 +244,121 @@
         </tr>
       </thead>
       <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800/80">
-        {#each filteredOrders as order}
-          <tr class="hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors">
-            <td class="py-3 px-4 font-mono">
-              <div class="font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-1.5">
-                <span>{order.id}</span>
-                {#if order.id.startsWith('DEMO') || order.is_demo}
-                  <span class="px-1.5 py-0.2 rounded text-[9px] font-bold font-mono bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
-                    DEMO
-                  </span>
-                {/if}
-              </div>
-              <div class="text-[10px] text-zinc-400">{order.created_at}</div>
-            </td>
-            <td class="py-3 px-4 max-w-xs">
-              <span class="font-medium text-zinc-900 dark:text-zinc-200 truncate block">{order.service_name}</span>
-            </td>
-            <td class="py-3 px-4 font-mono max-w-[200px] truncate">
-              <a href={order.target} target="_blank" rel="noreferrer" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 underline">
-                <span class="truncate">{order.target}</span>
-              </a>
-            </td>
-            <td class="py-3 px-4 text-center font-mono">
-              <div class="font-semibold text-zinc-900 dark:text-zinc-100">{order.quantity?.toLocaleString()}</div>
-              {#if order.remains > 0}
-                <div class="text-[10px] text-zinc-400 font-normal">Sisa: {order.remains}</div>
-              {/if}
-            </td>
-            <td class="py-3 px-4 text-right font-mono font-semibold text-zinc-900 dark:text-zinc-100">
-              {formatRupiah(order.total_price?.amount || 0)}
-            </td>
-            <td class="py-3 px-4 text-center">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">
-                <span class="w-1.5 h-1.5 rounded-full mr-1.5 {getStatusDot(order.status)}"></span>
-                <span class="capitalize">{order.status}</span>
-              </span>
-            </td>
-            <td class="py-3 px-4 text-center">
-              {#if order.status === 'success' && order.refill_supported}
-                <button
-                  type="button"
-                  class="h-6 px-2.5 rounded text-[11px] font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 transition-all"
-                  on:click={() => handleRefill(order.id)}
-                >
-                  Refill
-                </button>
-              {:else}
-                <span class="text-zinc-400 text-xs">-</span>
-              {/if}
+        {#if paginatedOrders.length === 0}
+          <tr>
+            <td colspan="7" class="py-8 text-center text-zinc-400 dark:text-zinc-500 text-xs">
+              Tidak ada data transaksi yang ditemukan.
             </td>
           </tr>
-        {/each}
+        {:else}
+          {#each paginatedOrders as order}
+            <tr class="hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors">
+              <td class="py-3 px-4 font-mono">
+                <div class="font-medium text-zinc-900 dark:text-zinc-100 flex items-center space-x-1.5">
+                  <span>{order.id}</span>
+                  {#if order.id.startsWith('DEMO') || order.is_demo}
+                    <span class="px-1.5 py-0.2 rounded text-[9px] font-bold font-mono bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+                      DEMO
+                    </span>
+                  {/if}
+                </div>
+                <div class="text-[10px] text-zinc-400">{order.created_at}</div>
+              </td>
+              <td class="py-3 px-4 max-w-xs">
+                <span class="font-medium text-zinc-900 dark:text-zinc-200 truncate block">{order.service_name}</span>
+              </td>
+              <td class="py-3 px-4 font-mono max-w-[200px] truncate">
+                <a href={order.target} target="_blank" rel="noreferrer" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 underline">
+                  <span class="truncate">{order.target}</span>
+                </a>
+              </td>
+              <td class="py-3 px-4 text-center font-mono">
+                <div class="font-semibold text-zinc-900 dark:text-zinc-100">{order.quantity?.toLocaleString()}</div>
+                {#if order.remains > 0}
+                  <div class="text-[10px] text-zinc-400 font-normal">Sisa: {order.remains}</div>
+                {/if}
+              </td>
+              <td class="py-3 px-4 text-right font-mono font-semibold text-zinc-900 dark:text-zinc-100">
+                {formatRupiah(order.total_price?.amount || 0)}
+              </td>
+              <td class="py-3 px-4 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">
+                  <span class="w-1.5 h-1.5 rounded-full mr-1.5 {getStatusDot(order.status)}"></span>
+                  <span class="capitalize">{order.status}</span>
+                </span>
+              </td>
+              <td class="py-3 px-4 text-center">
+                {#if order.status === 'success' && order.refill_supported}
+                  <button
+                    type="button"
+                    class="h-6 px-2.5 rounded text-[11px] font-medium border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 transition-all"
+                    on:click={() => handleRefill(order.id)}
+                  >
+                    Refill
+                  </button>
+                {:else}
+                  <span class="text-zinc-400 text-xs">-</span>
+                {/if}
+              </td>
+            </tr>
+          {/each}
+        {/if}
       </tbody>
     </table>
   </div>
+
+  <!-- Modern Pagination Bar -->
+  {#if filteredOrders.length > 0}
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-800 text-xs">
+      <div class="flex items-center space-x-2 text-zinc-500 dark:text-zinc-400 text-[11px]">
+        <span>Menampilkan <strong class="text-zinc-800 dark:text-zinc-200 font-mono">{(currentPage - 1) * pageSize + 1}</strong> - <strong class="text-zinc-800 dark:text-zinc-200 font-mono">{Math.min(currentPage * pageSize, filteredOrders.length)}</strong> dari <strong class="text-zinc-800 dark:text-zinc-200 font-mono">{filteredOrders.length}</strong> transaksi</span>
+        
+        <span class="text-zinc-300 dark:text-zinc-700">•</span>
+
+        <div class="flex items-center space-x-1">
+          <span>Baris:</span>
+          <select
+            bind:value={pageSize}
+            on:change={() => currentPage = 1}
+            class="px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[11px] font-mono text-zinc-800 dark:text-zinc-200 focus:outline-none"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-1">
+        <button
+          type="button"
+          disabled={currentPage === 1}
+          on:click={() => goToPage(currentPage - 1)}
+          class="px-2.5 py-1 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+        >
+          ‹ Sebelumnya
+        </button>
+
+        {#each Array(totalPages) as _, idx}
+          {@const p = idx + 1}
+          <button
+            type="button"
+            on:click={() => goToPage(p)}
+            class="w-7 h-7 rounded-md text-xs font-mono font-medium transition-all {currentPage === p ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'}"
+          >
+            {p}
+          </button>
+        {/each}
+
+        <button
+          type="button"
+          disabled={currentPage === totalPages}
+          on:click={() => goToPage(currentPage + 1)}
+          class="px-2.5 py-1 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+        >
+          Selanjutnya ›
+        </button>
+      </div>
+    </div>
+  {/if}
 </div>

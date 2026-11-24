@@ -95,6 +95,24 @@
     return matchesCategory && matchesSearch;
   });
 
+  // Services Catalog Pagination State
+  let servicesCurrentPage = 1;
+  let servicesPageSize = 8;
+
+  $: servicesTotalPages = Math.max(1, Math.ceil(filteredServices.length / servicesPageSize));
+  $: if (servicesCurrentPage > servicesTotalPages) servicesCurrentPage = servicesTotalPages;
+  $: if (activeCategory || searchQuery) {
+    // Reset to page 1 on search or category filter change
+  }
+
+  $: paginatedServices = filteredServices.slice((servicesCurrentPage - 1) * servicesPageSize, servicesCurrentPage * servicesPageSize);
+
+  function goToServicesPage(p) {
+    if (p >= 1 && p <= servicesTotalPages) {
+      servicesCurrentPage = p;
+    }
+  }
+
   $: calcTotalPrice = selectedCalcService
     ? Math.ceil((calcQuantity / 1000) * (selectedCalcService.price_user?.amount || 0))
     : 0;
@@ -424,7 +442,7 @@
   </section>
 
   <!-- INTERACTIVE VIRAL BOOST SIMULATOR & CARD GENERATOR -->
-  <section id="interactive-simulator" class="max-w-6xl mx-auto space-y-6 pt-6">
+  <section id="simulator" class="max-w-6xl mx-auto space-y-6 pt-6 scroll-mt-20">
     <div class="text-center max-w-2xl mx-auto space-y-2">
       <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold">
         <span>⚡ GENERATOR INTERAKTIF</span>
@@ -724,7 +742,7 @@
   </section>
 
   <!-- LIVE PRICE CALCULATOR & TRANSPARENT PUBLIC SERVICE CATALOG -->
-  <section id="pricing-table" class="space-y-6 pt-6 max-w-6xl mx-auto">
+  <section id="katalog-harga" class="space-y-6 pt-6 max-w-6xl mx-auto scroll-mt-20">
     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
       <div>
         <div class="inline-flex items-center space-x-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider font-mono">
@@ -851,7 +869,7 @@
                 <td colspan="6" class="px-4 py-8 text-center text-zinc-400">Tidak ada layanan yang ditemukan.</td>
               </tr>
             {:else}
-              {#each filteredServices as srv}
+              {#each paginatedServices as srv}
                 <tr class="hover:bg-zinc-50/70 dark:hover:bg-zinc-900/40 transition-colors">
                   <td class="px-4 py-3 font-mono font-medium text-zinc-500 whitespace-nowrap">{srv.id}</td>
                   <td class="px-4 py-3">
@@ -890,6 +908,61 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Modern Pagination Bar for Public Services -->
+      {#if filteredServices.length > 0}
+        <div class="p-3 bg-zinc-50/60 dark:bg-zinc-900/60 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div class="flex items-center space-x-2 text-zinc-500 dark:text-zinc-400 text-[11px]">
+            <span>Menampilkan <strong class="text-zinc-900 dark:text-zinc-100 font-mono">{(servicesCurrentPage - 1) * servicesPageSize + 1}</strong> - <strong class="text-zinc-900 dark:text-zinc-100 font-mono">{Math.min(servicesCurrentPage * servicesPageSize, filteredServices.length)}</strong> dari <strong class="text-zinc-900 dark:text-zinc-100 font-mono">{filteredServices.length}</strong> layanan</span>
+            
+            <span class="text-zinc-300 dark:text-zinc-700">•</span>
+
+            <div class="flex items-center space-x-1">
+              <span>Per halaman:</span>
+              <select
+                bind:value={servicesPageSize}
+                on:change={() => servicesCurrentPage = 1}
+                class="px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[11px] font-mono text-zinc-800 dark:text-zinc-200 focus:outline-none"
+              >
+                <option value={8}>8</option>
+                <option value={16}>16</option>
+                <option value={32}>32</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <button
+              type="button"
+              disabled={servicesCurrentPage === 1}
+              on:click={() => goToServicesPage(servicesCurrentPage - 1)}
+              class="px-2.5 py-1 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            >
+              ‹ Sebelumnya
+            </button>
+
+            {#each Array(servicesTotalPages) as _, idx}
+              {@const p = idx + 1}
+              <button
+                type="button"
+                on:click={() => goToServicesPage(p)}
+                class="w-7 h-7 rounded-md text-xs font-mono font-medium transition-all {servicesCurrentPage === p ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'}"
+              >
+                {p}
+              </button>
+            {/each}
+
+            <button
+              type="button"
+              disabled={servicesCurrentPage === servicesTotalPages}
+              on:click={() => goToServicesPage(servicesCurrentPage + 1)}
+              class="px-2.5 py-1 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            >
+              Selanjutnya ›
+            </button>
+          </div>
+        </div>
+      {/if}
     </div>
   </section>
 
@@ -922,8 +995,180 @@
     </div>
   </section>
 
+  <!-- GEO FOCUS & REGIONAL COVERAGE SECTION (INDONESIA) -->
+  <section id="jangkauan-wilayah" class="space-y-6 max-w-6xl mx-auto scroll-mt-20">
+    <div class="text-center space-y-2 max-w-2xl mx-auto">
+      <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-semibold border border-blue-500/20">
+        <span>🇮🇩</span>
+        <span>Jangkauan Nasional &amp; GEO Targeted Indonesia</span>
+      </div>
+      <h2 class="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
+        Layanan SMM &amp; Buzzer Terintegrasi di Seluruh Wilayah Indonesia
+      </h2>
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+        Didukung infrastruktur server berkecepatan tinggi dengan optimasi algoritma lokal, transaksi mata uang Rupiah (IDR), dan pembayaran QRIS otomatis terhubung ke seluruh kota besar di Indonesia.
+      </p>
+    </div>
+
+    <!-- Regional Coverage Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- 1. Jabodetabek -->
+      <div class="ui-card rounded-xl p-5 border border-zinc-200 dark:border-zinc-800 space-y-3 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-sm">🏙️</span>
+            <div>
+              <h3 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">DKI Jakarta &amp; Jabodetabek</h3>
+              <span class="text-[10px] text-zinc-400 font-mono">SCBD, Sudirman, BSD, Depok, Bekasi</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">HQ Server</span>
+        </div>
+        <p class="text-[11px] text-zinc-500 leading-relaxed">
+          Pusat operasional kampanye korporat, agency periklanan, dan buzzer trending Twitter/X &amp; TikTok FYP tercepat dengan latensi server &lt;10ms.
+        </p>
+        <div class="flex items-center space-x-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-[10px] text-zinc-400 font-mono">
+          <span>⚡ SLA: Instan (&lt;60 detik)</span>
+          <span>•</span>
+          <span>Target: Real Indo</span>
+        </div>
+      </div>
+
+      <!-- 2. Jawa Timur & Bali -->
+      <div class="ui-card rounded-xl p-5 border border-zinc-200 dark:border-zinc-800 space-y-3 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-sm">🏝️</span>
+            <div>
+              <h3 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Jawa Timur &amp; Bali</h3>
+              <span class="text-[10px] text-zinc-400 font-mono">Surabaya, Malang, Denpasar, Badung</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400">Hub Timur</span>
+        </div>
+        <p class="text-[11px] text-zinc-500 leading-relaxed">
+          Optimasi media sosial industri hospitality, destinasi pariwisata, TikTok Live Shop, dan eksportir lokal dengan interaksi organik tinggi.
+        </p>
+        <div class="flex items-center space-x-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-[10px] text-zinc-400 font-mono">
+          <span>📈 Garansi Refill 30 Hari</span>
+          <span>•</span>
+          <span>QRIS Aktif 24 Jam</span>
+        </div>
+      </div>
+
+      <!-- 3. Jawa Barat & Banten -->
+      <div class="ui-card rounded-xl p-5 border border-zinc-200 dark:border-zinc-800 space-y-3 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-sm">🎨</span>
+            <div>
+              <h3 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Jawa Barat &amp; Banten</h3>
+              <span class="text-[10px] text-zinc-400 font-mono">Bandung, Bogor, Cirebon, Serang</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400">Kreatif Hub</span>
+        </div>
+        <p class="text-[11px] text-zinc-500 leading-relaxed">
+          Penyedia followers dan likes aktif untuk ratusan brand fashion distro Bandung, resto kuliner, serta content creator Jawa Barat.
+        </p>
+        <div class="flex items-center space-x-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-[10px] text-zinc-400 font-mono">
+          <span>👥 Jaringan 25.000+ Buzzer</span>
+          <span>•</span>
+          <span>Keamanan 100%</span>
+        </div>
+      </div>
+
+      <!-- 4. Sumatera -->
+      <div class="ui-card rounded-xl p-5 border border-zinc-200 dark:border-zinc-800 space-y-3 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-sm">🌿</span>
+            <div>
+              <h3 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Pulau Sumatera</h3>
+              <span class="text-[10px] text-zinc-400 font-mono">Medan, Palembang, Batam, Pekanbaru</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400">Sumbagut/sel</span>
+        </div>
+        <p class="text-[11px] text-zinc-500 leading-relaxed">
+          Mendukung ekspansi digital bisnis retail, e-commerce Batam, properti, dan engagement Instagram akun bisnis lokal di seluruh Sumatera.
+        </p>
+        <div class="flex items-center space-x-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-[10px] text-zinc-400 font-mono">
+          <span>🛡️ Non-Drop Guarantee</span>
+          <span>•</span>
+          <span>Support Lokal</span>
+        </div>
+      </div>
+
+      <!-- 5. Jawa Tengah & DI Yogyakarta -->
+      <div class="ui-card rounded-xl p-5 border border-zinc-200 dark:border-zinc-800 space-y-3 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-sm">🏛️</span>
+            <div>
+              <h3 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Jawa Tengah &amp; DIY</h3>
+              <span class="text-[10px] text-zinc-400 font-mono">Semarang, Solo, Jogja, Purwokerto</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">Edukasi &amp; Seni</span>
+        </div>
+        <p class="text-[11px] text-zinc-500 leading-relaxed">
+          Optimasi jam tayang monetisasi YouTube, engagement akun mahasiswa, instansi pendidikan, dan UMKM cinderamata Yogyakarta.
+        </p>
+        <div class="flex items-center space-x-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-[10px] text-zinc-400 font-mono">
+          <span>📺 YouTube 4.000 Jam</span>
+          <span>•</span>
+          <span>Metode Organik</span>
+        </div>
+      </div>
+
+      <!-- 6. Sulawesi & Indonesia Timur -->
+      <div class="ui-card rounded-xl p-5 border border-zinc-200 dark:border-zinc-800 space-y-3 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-sm">🌅</span>
+            <div>
+              <h3 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Kalimantan, Sulawesi &amp; Timur</h3>
+              <span class="text-[10px] text-zinc-400 font-mono">Makassar, Manado, Balikpapan, Ambon</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-teal-500/10 text-teal-600 dark:text-teal-400">Timur Indo</span>
+        </div>
+        <p class="text-[11px] text-zinc-500 leading-relaxed">
+          Solusi optimasi digital untuk pengusaha regional di wilayah IKN Nusantara, Makassar, hingga Papua dengan kemudahan bayar QRIS instan.
+        </p>
+        <div class="flex items-center space-x-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/60 text-[10px] text-zinc-400 font-mono">
+          <span>🚀 Serverless WASM</span>
+          <span>•</span>
+          <span>Uptime 99.98%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regional Trust & Payment Banner -->
+    <div class="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-white dark:bg-zinc-800 flex items-center justify-center text-xl shadow-xs border border-zinc-200 dark:border-zinc-700">
+          💳
+        </div>
+        <div>
+          <div class="font-bold text-zinc-900 dark:text-zinc-100">Standar Transaksi Resmi Perbankan Indonesia</div>
+          <div class="text-[11px] text-zinc-500">Mendukung QRIS Bank Indonesia, BCA, Mandiri, BRI, BNI, GoPay, OVO, Dana, ShopeePay.</div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 shrink-0">
+        <span class="px-2.5 py-1 rounded-md bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 font-mono text-[10px] font-bold text-zinc-800 dark:text-zinc-200">
+          🇮🇩 100% RUPIAH (IDR)
+        </span>
+        <span class="px-2.5 py-1 rounded-md bg-emerald-500/15 border border-emerald-500/30 font-mono text-[10px] font-bold text-emerald-700 dark:text-emerald-400">
+          ✓ BEBAS BIAYA ADMIN
+        </span>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ SECTION -->
-  <section class="space-y-6 max-w-3xl mx-auto">
+  <section id="faq" class="space-y-6 max-w-3xl mx-auto scroll-mt-20">
     <div class="text-center space-y-2">
       <h2 class="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
         Pertanyaan Umum (FAQ)
